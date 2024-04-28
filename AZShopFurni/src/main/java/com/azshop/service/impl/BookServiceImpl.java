@@ -43,7 +43,7 @@ public class BookServiceImpl implements IBookService {
 	@Override
 	public List<BookModel> findWithCount(int count) {
 		// TODO Auto-generated method stub
-		return bookDAO.findWithCount(10);
+		return bookDAO.findWithCount(count);
 	}
 
 	@Override

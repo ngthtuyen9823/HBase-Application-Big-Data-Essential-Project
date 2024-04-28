@@ -9,21 +9,29 @@
 			<div class="col-sm-6 col-lg-3 p-b-10">
 				<a href="<c:url value='/home'/>"> <img alt="Logo-web"
 					style="width: 200px"
-					src="https://storage.googleapis.com/web-budget/Image/Other/logo.png">
+					src="https://avatars.githubusercontent.com/u/75773455?s=280&v=4">
 				</a>
 			</div>
 
 			<div class="col-sm-6 col-lg-3 p-b-10">
 				<h4 class="stext-301 cl2 p-b-10">DANH MỤC</h4>
 
-				<%-- <ul style="padding-left: 0;">
-					<c:forEach items="${rootCategories}" var="category">
-						<li class="p-b-10"><a
-							href="<c:url value='/products?cateId=${category.categoryID}'/>"
-							class="stext-107 cl6 hov-cl1 trans-04">
-								${category.categoryName} </a></li>
-					</c:forEach>
-				</ul> --%>
+				<ul style="padding-left: 0;">
+					<li class="p-b-10"><a href="#"
+						class="stext-107 cl6 hov-cl1 trans-04"> Fiction </a></li>
+				</ul>
+				<ul style="padding-left: 0;">
+					<li class="p-b-10"><a href="#"
+						class="stext-107 cl6 hov-cl1 trans-04"> Non Fiction </a></li>
+				</ul>
+				<ul style="padding-left: 0;">
+					<li class="p-b-10"><a href="#"
+						class="stext-107 cl6 hov-cl1 trans-04"> Dictionary </a></li>
+				</ul>
+				<ul style="padding-left: 0;">
+					<li class="p-b-10"><a href="#"
+						class="stext-107 cl6 hov-cl1 trans-04"> Science </a></li>
+				</ul>
 			</div>
 
 			<div class="col-sm-6 col-lg-3 p-b-10">
@@ -31,13 +39,7 @@
 
 				<ul style="padding-left: 0;">
 					<li class="p-b-10"><div class="stext-107 cl6 hov-cl1 trans-04">
-							Ưu đãi</div></li>
-
-					<li class="p-b-10"><div class="stext-107 cl6 hov-cl1 trans-04">
-							Trả hàng</div></li>
-
-					<li class="p-b-10"><div class="stext-107 cl6 hov-cl1 trans-04">
-							Giao hàng</div></li>
+							Đặt sách</div></li>
 
 					<li class="p-b-10"><div class="stext-107 cl6 hov-cl1 trans-04">
 							FAQs</div></li>
@@ -47,9 +49,8 @@
 			<div class="col-sm-6 col-lg-3 p-b-10">
 				<h4 class="stext-301 cl2 p-b-10">ĐỊA CHỈ CỬA HÀNG</h4>
 
-				<p class="stext-107 cl6 size-201">Hãy đến cửa hàng của chúng tôi
-					tại SH603-1, Block S6.03 Vinhome Grand Park, Thủ Đức, TP.Hồ Chí
-					Minh hoặc hotline 096 716 6879</p>
+				<p class="stext-107 cl6 size-201">Địa chỉ: 01 Đường Võ Văn Ngân,
+					P. Linh Chiểu, TP. Thủ Đức, TP. Hồ Chí Minh.</p>
 
 				<div class="p-t-27">
 					<a href="https://www.facebook.com/makemyhomevn"
@@ -64,56 +65,21 @@
 					</a>
 				</div>
 			</div>
-
-
 		</div>
 
 		<div class="p-t-0">
-			<div class="flex-c-m flex-w p-b-18">
-				<div class="m-all-1">
-					<img
-						src="https://storage.googleapis.com/web-budget/Image/icons/icon-pay-01.png"
-						alt="ICON-PAY">
-				</div>
-				<div class="m-all-1">
-					<img
-						src="https://storage.googleapis.com/web-budget/Image/icons/icon-pay-02.png"
-						alt="ICON-PAY">
-				</div>
-				<div class="m-all-1">
-					<img
-						src="https://storage.googleapis.com/web-budget/Image/icons/icon-pay-03.png"
-						alt="ICON-PAY">
-				</div>
-				<div class="m-all-1">
-					<img
-						src="https://storage.googleapis.com/web-budget/Image/icons/icon-pay-04.png"
-						alt="ICON-PAY">
-				</div>
-				<div class="m-all-1">
-					<img
-						src="https://storage.googleapis.com/web-budget/Image/icons/icon-pay-05.png"
-						alt="ICON-PAY">
-				</div>
-			</div>
-
 			<p class="stext-107 cl6 txt-center">
-				<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 				Copyright &copy;
 				<script>
 					document.write(new Date().getFullYear());
 				</script>
-				All rights reserved | Made with <i class="fa fa-heart-o"
-					aria-hidden="true"></i> by Nhóm 4</a> &amp; distributed by <a
-					href="https://themewagon.com" target="_blank">ThemeWagon</a>
-				<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-
+				All rights reserved | Made by <i class="fa fa-heart-o"
+					aria-hidden="true"></i> by Nhóm 04 Lớp Cơ Sở Dữ liệu Nâng cao</a> &amp;
+				GVHD <a href="#" target="_blank">Lê Thị Minh Châu</a>
 			</p>
 		</div>
 	</div>
 </footer>
-
-
 <!-- Back to top -->
 <div class="btn-back-to-top" id="myBtn">
 	<span class="symbol-btn-back-to-top"> <i

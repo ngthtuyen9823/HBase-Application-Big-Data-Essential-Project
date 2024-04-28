@@ -9,12 +9,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.azshop.config.InitData;
 import com.azshop.models.BookModel;
 import com.azshop.service.IBookService;
 import com.azshop.service.impl.BookServiceImpl;
 
-@WebServlet(urlPatterns = "/home")
+@WebServlet(urlPatterns = { "/home", "/contact" })
 public class HomeController extends HttpServlet {
 
 	private static final long serialVersionUID = 4317368494648713183L;
@@ -26,9 +25,11 @@ public class HomeController extends HttpServlet {
 		resp.setCharacterEncoding("UTF-8");
 		req.setCharacterEncoding("UTF-8");
 
-		List<BookModel> listBook = bookService.findWithCount(5);
-		req.setAttribute("books", listBook);
+		if (req.getRequestURI().contains("/home")) {
+			req.getRequestDispatcher("/views/web/home.jsp").forward(req, resp);
 
-		req.getRequestDispatcher("/views/web/books.jsp").forward(req, resp);
+		} else if (req.getRequestURI().contains("/contact")) {
+			req.getRequestDispatcher("/views/web/contact.jsp").forward(req, resp);
+		}
 	}
 }
