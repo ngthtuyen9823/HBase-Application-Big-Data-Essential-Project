@@ -415,7 +415,7 @@ section {
 </section>
 
 <section class="product">
-	<h2 class="product-category">sản phẩm bán chạy</h2>
+	<h2 class="product-category">Top 5 Sách được đánh giá cao</h2>
 	<button class="pre-btn">
 		<img src="images/arrow.png" alt="">
 	</button>
@@ -423,7 +423,7 @@ section {
 		<img src="images/arrow.png" alt="">
 	</button>
 	<div class="product-container">
-		<c:forEach var="i" items="${list}">
+		<%-- <c:forEach var="i" items="${products}">
 			<div class="product-card">
 				<input type="hidden" name="itemID" value="${i.get(1)}"> <input
 					type="hidden" name="productID" value="${i.get(0)}">
@@ -457,7 +457,7 @@ section {
 
 				</div>
 			</div>
-		</c:forEach>
+		</c:forEach> --%>
 	</div>
 </section>
 <!-- edit slider -->
