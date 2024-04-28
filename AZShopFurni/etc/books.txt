@@ -1,0 +1,11 @@
+
+scan 'books', { LIMIT => 10 }
+
+scan 'books', {STARTROW => '19600101000000', STOPROW => '19600110000000'}
+
+scan 'books', {STARTROW => '19600101000000', STOPROW => '19600201000000'}
+
+scan 'books', {STARTROW => '19600101000000', STOPROW => '19600201000000', COLUMNS => 'name:'}
+
+scan 'books', {STARTROW => '19600101000000', STOPROW => '19600201000000', COLUMNS => [ 'name:surname', 'name:givenName' ]}
+

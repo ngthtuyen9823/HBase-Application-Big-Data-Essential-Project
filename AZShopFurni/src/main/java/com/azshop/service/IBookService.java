@@ -1,10 +1,10 @@
-package com.azshop.dao;
+package com.azshop.service;
 
 import java.util.List;
 
 import com.azshop.models.BookModel;
 
-public interface IBookDAO {
+public interface IBookService {
 	List<BookModel> findAll();
 
 	BookModel findOne(int id);

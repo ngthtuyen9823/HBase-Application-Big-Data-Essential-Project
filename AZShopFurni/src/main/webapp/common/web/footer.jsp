@@ -16,14 +16,14 @@
 			<div class="col-sm-6 col-lg-3 p-b-10">
 				<h4 class="stext-301 cl2 p-b-10">DANH MỤC</h4>
 
-				<ul style="padding-left: 0;">
+				<%-- <ul style="padding-left: 0;">
 					<c:forEach items="${rootCategories}" var="category">
 						<li class="p-b-10"><a
 							href="<c:url value='/products?cateId=${category.categoryID}'/>"
 							class="stext-107 cl6 hov-cl1 trans-04">
 								${category.categoryName} </a></li>
 					</c:forEach>
-				</ul>
+				</ul> --%>
 			</div>
 
 			<div class="col-sm-6 col-lg-3 p-b-10">
