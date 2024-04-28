@@ -7,7 +7,7 @@ import com.azshop.models.BookModel;
 public interface IBookService {
 	List<BookModel> findAll();
 
-	BookModel findOne(int id);
+	BookModel findOne(String id);
 
 	List<BookModel> findByName(String key);
 

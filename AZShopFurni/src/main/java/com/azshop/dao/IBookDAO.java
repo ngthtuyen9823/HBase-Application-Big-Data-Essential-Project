@@ -1,13 +1,14 @@
 package com.azshop.dao;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.azshop.models.BookModel;
 
 public interface IBookDAO {
-	List<BookModel> findAll();
+	List<BookModel> findAll() throws IOException;
 
-	BookModel findOne(int id);
+	BookModel findOne(String id) throws IOException;
 
 	List<BookModel> findByName(String key);
 
