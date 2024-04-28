@@ -12,24 +12,28 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.azshop.dao.ICategoryDAO;
-import com.azshop.dao.ISupplierDAO;
-import com.azshop.dao.impl.CategoryDAOImpl;
-import com.azshop.dao.impl.SupplierDAOImpl;
-import com.azshop.models.CategoryModel;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.Cell;
+import org.apache.hadoop.hbase.CellUtil;
+import org.apache.hadoop.hbase.TableName;
+import org.apache.hadoop.hbase.client.Connection;
+import org.apache.hadoop.hbase.client.ConnectionFactory;
+import org.apache.hadoop.hbase.client.Get;
+import org.apache.hadoop.hbase.client.Result;
+import org.apache.hadoop.hbase.client.Table;
+import org.apache.hadoop.hbase.util.Bytes;
+
+import com.azshop.models.BookModel;
 import com.azshop.models.ProductModel;
-import com.azshop.models.SupplierModel;
-import com.azshop.models.UserModel;
 import com.azshop.service.IProductService;
 import com.azshop.service.impl.ProductServiceImpl;
-import com.azshop.utils.MessageUtil;
-import com.mysql.cj.Session;
+
+import oracle.demo.oow.bd.to.MovieTO;
+import oracle.demo.oow.bd.util.hbase.ConstantsHBase;
 
 @WebServlet(urlPatterns = { "/adminProduct", "/admininsertProduct", "/admindeleteProduct", "/adminupdateProduct" })
 public class ProductController extends HttpServlet {
 	IProductService prod = new ProductServiceImpl();
-	ICategoryDAO cate = new CategoryDAOImpl();
-	ISupplierDAO supp = new SupplierDAOImpl();
 	private static final long serialVersionUID = 1L;
 	HttpSession session;
 
@@ -58,15 +62,10 @@ public class ProductController extends HttpServlet {
 			resp.sendRedirect(req.getContextPath() + "/login");
 		}
 	}
-
+	private static final String TABS = "\t\t\t\t\t";
 	private void List(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		List<CategoryModel> listcate = cate.findAll();
-		List<ProductModel> listProduct = prod.findAllProduct();
-		List<SupplierModel> listSupplier = supp.findAll();
-		req.setAttribute("listSupplier", listSupplier);
-		req.setAttribute("listProduct", listProduct);
-		req.setAttribute("listCate", listcate);
-		req.setAttribute("productrating", prod.ProductRating());
+//		List<ProductModel> listProduct = prod.findAllProduct();
+//		req.setAttribute("listProduct", listProduct);
 		req.getRequestDispatcher("/views/admin/product/ListProduct.jsp").forward(req, resp);
 	}
 

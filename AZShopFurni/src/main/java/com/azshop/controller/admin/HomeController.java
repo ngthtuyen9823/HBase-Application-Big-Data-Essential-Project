@@ -35,10 +35,6 @@ import com.azshop.service.impl.UserServiceImpl;
 public class HomeController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	IReportService reportService = new ReportServiceImpl();
-	IOrderService orderService = new OrderServiceImpl();
-	IUserService userService = new UserServiceImpl();
-	IPaymentService paymentService = new PaymentServiceImpl();
 	IProductService prod = new ProductServiceImpl();
 
 	@Override
