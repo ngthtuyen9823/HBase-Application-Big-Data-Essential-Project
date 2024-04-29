@@ -10,6 +10,7 @@ import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.Connection;
 import org.apache.hadoop.hbase.client.ConnectionFactory;
 import org.apache.hadoop.hbase.client.Get;
+import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.client.Scan;
@@ -40,7 +41,6 @@ public class BookDAOImpl implements IBookDAO {
 				bookModel.setIsbn13(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn13"))));
 				bookModel.setIsbn10(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn10"))));
 				bookModel.setTitle(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("title"))));
-				bookModel.setSubtitle(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("subtitle"))));
 				bookModel.setAuthors(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("authors"))));
 				bookModel.setCategories(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("categories"))));
 				bookModel.setThumbnail(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("thumbnail"))));
@@ -64,10 +64,10 @@ public class BookDAOImpl implements IBookDAO {
 
 				byte[] numPagesBytes = result.getValue(DETAIL_CF, Bytes.toBytes("num_pages"));
 				if (numPagesBytes != null && numPagesBytes.length >= Bytes.SIZEOF_INT) {
-					bookModel.setNum_pages(Bytes.toInt(numPagesBytes));
+					bookModel.setNumbers(Bytes.toInt(numPagesBytes));;
 				} else {
 					// Handle null value or insufficient byte array length
-					bookModel.setNum_pages(0); // Set a default value or log a message
+					bookModel.setNumbers(0); // Set a default value or log a message
 				}
 
 				byte[] ratingsCountBytes = result.getValue(DETAIL_CF, Bytes.toBytes("ratings_count"));
@@ -121,10 +121,6 @@ public class BookDAOImpl implements IBookDAO {
 				// TODO: handle exception
 				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
 		return bookmodel;
 	}
 	
@@ -219,34 +215,32 @@ public class BookDAOImpl implements IBookDAO {
 
 	@Override
 	public void insert(BookModel model) {
-		try {
-			if (model != null) {
+        try {
+            if (model != null) {
 
-				Configuration conf = new Configuration();
-				Connection connection = ConnectionFactory.createConnection(conf);
-				Table table = connection.getTable(TableName.valueOf("books"));
+            	Configuration conf = new Configuration();
+            	Connection connection = ConnectionFactory.createConnection(conf);
+            	Table table = connection.getTable(TableName.valueOf("books"));
+            	
+            	
+            	Put put = new Put(Bytes.toBytes(model.getIsbn13()));
+                put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("isbn13"), Bytes.toBytes(model.getIsbn13()));
+            	put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("isbn10"), Bytes.toBytes(model.getIsbn10()));
+                put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("title"), Bytes.toBytes(model.getTitle()));
+                put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("authors"), Bytes.toBytes(model.getAuthors()));
+                put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("categories"), Bytes.toBytes(model.getCategories()));
+                put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("thumbnail"), Bytes.toBytes(model.getThumbnail()));
+                put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("description"), Bytes.toBytes(model.getDescription()));
+                put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("published_year"),
+                        Bytes.toBytes(model.getPublished_year()));
+                put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("average_rating"),
+                        Bytes.toBytes(model.getAverage_rating()));
+                put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("num_pages"), Bytes.toBytes(model.getNumbers()));
+                put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("ratings_count"), Bytes.toBytes(model.getRatings_count()));
 
-				Put put = new Put(Bytes.toBytes(model.getIsbn13()));
-				put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("isbn13"), Bytes.toBytes(model.getIsbn13()));
-				put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("isbn10"), Bytes.toBytes(model.getIsbn10()));
-				put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("title"), Bytes.toBytes(model.getTitle()));
-				put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("subtitle"), Bytes.toBytes(model.getSubtitle()));
-				put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("authors"), Bytes.toBytes(model.getAuthors()));
-				put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("categories"), Bytes.toBytes(model.getCategories()));
-				put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("thumbnail"), Bytes.toBytes(model.getThumbnail()));
-				put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("description"),
-						Bytes.toBytes(model.getDescription()));
-				put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("published_year"),
-						Bytes.toBytes(model.getPublished_year()));
-				put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("average_rating"),
-						Bytes.toBytes(model.getAverage_rating()));
-				put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("num_pages"), Bytes.toBytes(model.getNum_pages()));
-				put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("ratings_count"),
-						Bytes.toBytes(model.getRatings_count()));
-
-				table.put(put);
-			}
-
+            	table.put(put);
+            }     	
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -272,7 +266,6 @@ public class BookDAOImpl implements IBookDAO {
 				
 				put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("isbn10"), Bytes.toBytes(model.getIsbn10()));
 				put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("title"), Bytes.toBytes(model.getTitle()));
-				put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("subtitle"), Bytes.toBytes(model.getSubtitle()));
 				put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("authors"), Bytes.toBytes(model.getAuthors()));
 				put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("categories"), Bytes.toBytes(model.getCategories()));
 				put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("thumbnail"), Bytes.toBytes(model.getThumbnail()));
@@ -282,7 +275,7 @@ public class BookDAOImpl implements IBookDAO {
 						Bytes.toBytes(model.getPublished_year()));
 				put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("average_rating"),
 						Bytes.toBytes(model.getAverage_rating()));
-				put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("num_pages"), Bytes.toBytes(model.getNum_pages()));
+				put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("num_pages"), Bytes.toBytes(model.getNumbers()));
 				put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("ratings_count"),
 						Bytes.toBytes(model.getRatings_count()));
 

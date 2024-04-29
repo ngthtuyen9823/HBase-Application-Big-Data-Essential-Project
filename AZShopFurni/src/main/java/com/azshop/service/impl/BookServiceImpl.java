@@ -48,8 +48,7 @@ public class BookServiceImpl implements IBookService {
 
 	@Override
 	public void insert(BookModel model) {
-		// TODO Auto-generated method stub
-
+		bookDAO.insert(model);
 	}
 
 	@Override

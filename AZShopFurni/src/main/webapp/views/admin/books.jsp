@@ -13,42 +13,15 @@
 	<!-- Product -->
 	<section class="bg0 p-t-23 p-b-130">
 		<div class="container">
-			<!-- List books -->
-			<div class="row isotope-grid">
-				<c:if test="${books.size() > 0}">
-					<c:forEach items="${books}" var="item">
-						<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item ">
-							<div class="block2">
-								<div class="block2-pic hov-img0 product-image-size">
-									<img src="${item.thumbnail}" alt="IMG-PRODUCT"> <a
-										href='<c:url value="/books?id=${item.isbn13}"/>'
-										class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04">
-										Xem chi tiết</a>
-								</div>
-
-								<div class="block2-txt flex-w flex-t p-t-14">
-									<div class="block2-txt-child1 flex-col-l ">
-										<a href='<c:url value="/books?id=${item.isbn13}"/>'
-											class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-											${item.title} </a> <span class="stext-105 cl3">
-											${item.description} </span> <span class="stext-105 cl3"> <i
-											class="fas fa-star"
-											style="${item.average_rating >= 1 ? 'color: gold;' : ''}"></i>
-											<i class="fas fa-star"
-											style="${item.average_rating >= 2 ? 'color: gold;' : ''}"></i>
-											<i class="fas fa-star"
-											style="${item.average_rating >= 3 ? 'color: gold;' : ''}"></i>
-											<i class="fas fa-star"
-											style="${item.average_rating >= 4 ? 'color: gold;' : ''}"></i>
-											<i class="fas fa-star"
-											style="${item.average_rating >= 5 ? 'color: gold;' : ''}"></i>
-										</span>
-									</div>
-								</div>
-							</div>
-						</div>
-					</c:forEach>
-				</c:if>
+			<div class="card mb-4">
+				<div class="card-body">
+					<a href="<c:url value='/adminInsertBook'/>"
+						style="margin-right: 50px;">
+						<button type="button" class="btn btn-dark">
+							<i class="ace-icon fa fa-pencil"></i> Thêm sách
+						</button>
+					</a>
+				</div>
 			</div>
 
 			<div class="card mb-4">
@@ -62,7 +35,6 @@
 								<th>ISBN13</th>
 								<th>ISBN10</th>
 								<th>Title</th>
-								<th>Subtitle</th>
 								<th>Authors</th>
 								<th>Categories</th>
 								<th>Thumbnail</th>
@@ -82,14 +54,13 @@
 									<td>${i.isbn13}</td>
 									<td>${i.isbn10}</td>
 									<td>${i.title}</td>
-									<td>${i.subtitle}</td>
 									<td>${i.authors}</td>
 									<td>${i.categories}</td>
 									<td>${i.thumbnail}</td>
 									<td>${i.description}</td>
 									<td>${i.published_year}</td>
 									<td>${i.average_rating}</td>
-									<td>${i.num_pages}</td>
+									<td>${i.numbers}</td>
 									<td>${i.ratings_count}</td>
 									
 									<td><div class="hidden-sm hidden-xs btn-group">
