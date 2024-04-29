@@ -13,7 +13,12 @@ public class BookServiceImpl implements IBookService {
 
 	@Override
 	public List<BookModel> findAll() {
-		// TODO Auto-generated method stub
+		try {
+			return bookDAO.findAll();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
@@ -52,14 +57,14 @@ public class BookServiceImpl implements IBookService {
 	}
 
 	@Override
-	public void delete(int id) {
-		// TODO Auto-generated method stub
+	public void delete(String id) {
+		bookDAO.delete(id);
 
 	}
 
 	@Override
 	public void update(BookModel model) {
-		// TODO Auto-generated method stub
+		bookDAO.update(model);
 
 	}
 

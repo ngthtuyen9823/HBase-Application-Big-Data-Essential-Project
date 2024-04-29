@@ -41,7 +41,7 @@
 								<th>Description</th>
 								<th>Publish Year</th>
 								<th>Average Rating</th>
-								<th>Num Page</th>
+								<th>Numbers</th>
 								<th>Rating count</th>
 								<th>Edit</th>
 
@@ -71,19 +71,19 @@
 												</button>
 											</a>  --%>
 											<a
-												href="<c:url value='/adminUpdateBook?bookID=${i.isbn13}'/>">
+												href="<c:url value='/adminUpdateBook?bookID=${i.isbn10}'/>">
 												<button class="btn btn-xs btn-info btn-sm">
 													<i class="ace-icon fa fa-pencil"></i>
 												</button>
 											</a>
-<%-- 											<a href="#" class="trigger-btn" data-toggle="modal"
+ 											<a href="#" class="trigger-btn" data-toggle="modal"
 												data-target="#myModal"
-												data-link="<c:url value='/admindeleteProduct?ProductID=${i.productID}'/>">
+												data-link="<c:url value='/adminDeleteBook?bookID=${i.isbn10}'/>">
 												<button type="button" class="btn btn-xs btn-info btn-sm"
 													id="liveToastBtn">
 													<i class="ace-icon fa fa-trash"></i>
 												</button>
-											</a> --%>
+											</a>
 										</div>
 									</td>
 								</tr>

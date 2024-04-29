@@ -20,7 +20,7 @@ public interface IBookService {
 
 	void insert(BookModel model);
 
-	void delete(int id);
+	void delete(String id);
 
 	void update(BookModel model);
 

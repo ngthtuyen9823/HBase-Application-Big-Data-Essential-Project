@@ -9,6 +9,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.Connection;
 import org.apache.hadoop.hbase.client.ConnectionFactory;
+import org.apache.hadoop.hbase.client.Delete;
 import org.apache.hadoop.hbase.client.Get;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
@@ -62,7 +63,7 @@ public class BookDAOImpl implements IBookDAO {
 					bookModel.setAverage_rating(0.0f); // Set a default value or log a message
 				}
 
-				byte[] numPagesBytes = result.getValue(DETAIL_CF, Bytes.toBytes("num_pages"));
+				byte[] numPagesBytes = result.getValue(DETAIL_CF, Bytes.toBytes("numbers"));
 				if (numPagesBytes != null && numPagesBytes.length >= Bytes.SIZEOF_INT) {
 					bookModel.setNumbers(Bytes.toInt(numPagesBytes));;
 				} else {
@@ -109,10 +110,37 @@ public class BookDAOImpl implements IBookDAO {
 				bookmodel.setDescription(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("description")))); // Family
 																													// -
 																													// qualifier
-				bookmodel.setPublished_year(Bytes.toInt(result.getValue(DETAIL_CF, Bytes.toBytes("published_year"))));
-				bookmodel.setAverage_rating(Bytes.toInt(result.getValue(DETAIL_CF, Bytes.toBytes("average_rating"))));
-				bookmodel.setNumbers(Bytes.toInt(result.getValue(DETAIL_CF, Bytes.toBytes("numbers"))));
-				bookmodel.setRatings_count(Bytes.toInt(result.getValue(DETAIL_CF, Bytes.toBytes("ratings_count"))));
+				byte[] publishedYearBytes = result.getValue(DETAIL_CF, Bytes.toBytes("published_year"));
+				if (publishedYearBytes != null && publishedYearBytes.length >= Bytes.SIZEOF_INT) {
+					bookmodel.setPublished_year(Bytes.toInt(publishedYearBytes));
+				} else {
+					// Handle null value or insufficient byte array length
+					bookmodel.setPublished_year(0); // Set a default value or log a message
+				}
+
+				byte[] averageRatingBytes = result.getValue(DETAIL_CF, Bytes.toBytes("average_rating"));
+				if (averageRatingBytes != null && averageRatingBytes.length >= Bytes.SIZEOF_FLOAT) {
+					bookmodel.setAverage_rating(Bytes.toFloat(averageRatingBytes));
+				} else {
+					// Handle null value or insufficient byte array length
+					bookmodel.setAverage_rating(0.0f); // Set a default value or log a message
+				}
+
+				byte[] numPagesBytes = result.getValue(DETAIL_CF, Bytes.toBytes("numbers"));
+				if (numPagesBytes != null && numPagesBytes.length >= Bytes.SIZEOF_INT) {
+					bookmodel.setNumbers(Bytes.toInt(numPagesBytes));;
+				} else {
+					// Handle null value or insufficient byte array length
+					bookmodel.setNumbers(0); // Set a default value or log a message
+				}
+
+				byte[] ratingsCountBytes = result.getValue(DETAIL_CF, Bytes.toBytes("ratings_count"));
+				if (ratingsCountBytes != null && ratingsCountBytes.length >= Bytes.SIZEOF_INT) {
+					bookmodel.setRatings_count(Bytes.toInt(ratingsCountBytes));
+				} else {
+					// Handle null value or insufficient byte array length
+					bookmodel.setRatings_count(0); // Set a default value or log a message
+				}
 			} 
 			else {
 				System.out.println("Empty");
@@ -223,7 +251,7 @@ public class BookDAOImpl implements IBookDAO {
             	Table table = connection.getTable(TableName.valueOf("books"));
             	
             	
-            	Put put = new Put(Bytes.toBytes(model.getIsbn13()));
+            	Put put = new Put(Bytes.toBytes(model.getIsbn10()));
                 put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("isbn13"), Bytes.toBytes(model.getIsbn13()));
             	put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("isbn10"), Bytes.toBytes(model.getIsbn10()));
                 put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("title"), Bytes.toBytes(model.getTitle()));
@@ -235,7 +263,7 @@ public class BookDAOImpl implements IBookDAO {
                         Bytes.toBytes(model.getPublished_year()));
                 put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("average_rating"),
                         Bytes.toBytes(model.getAverage_rating()));
-                put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("num_pages"), Bytes.toBytes(model.getNumbers()));
+                put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("numbers"), Bytes.toBytes(model.getNumbers()));
                 put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("ratings_count"), Bytes.toBytes(model.getRatings_count()));
 
             	table.put(put);
@@ -248,8 +276,19 @@ public class BookDAOImpl implements IBookDAO {
 	}
 
 	@Override
-	public void delete(int id) {
-		// TODO Auto-generated method stub
+	public void delete(String id) {
+		try {
+			Configuration conf = new Configuration();
+        	Connection connection = ConnectionFactory.createConnection(conf);
+        	Table table = connection.getTable(TableName.valueOf("books"));
+            List list = new ArrayList();
+            Delete delete = new Delete(id.getBytes());
+            list.add(delete);
+            table.delete(list);
+            System.out.println("delete row successful!");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 	}
 
@@ -261,8 +300,7 @@ public class BookDAOImpl implements IBookDAO {
 				Configuration conf = new Configuration();
 				Connection connection = ConnectionFactory.createConnection(conf);
 				Table table = connection.getTable(TableName.valueOf("books"));
-
-				Put put = new Put(Bytes.toBytes(model.getIsbn13()));
+				Put put = new Put(Bytes.toBytes(model.getIsbn10()));
 				
 				put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("isbn10"), Bytes.toBytes(model.getIsbn10()));
 				put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("title"), Bytes.toBytes(model.getTitle()));
@@ -275,7 +313,7 @@ public class BookDAOImpl implements IBookDAO {
 						Bytes.toBytes(model.getPublished_year()));
 				put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("average_rating"),
 						Bytes.toBytes(model.getAverage_rating()));
-				put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("num_pages"), Bytes.toBytes(model.getNumbers()));
+				put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("numbers"), Bytes.toBytes(model.getNumbers()));
 				put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("ratings_count"),
 						Bytes.toBytes(model.getRatings_count()));
 
@@ -285,7 +323,6 @@ public class BookDAOImpl implements IBookDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	@Override

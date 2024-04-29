@@ -33,10 +33,6 @@
 											<label>Title</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="subtitle" value ="${book.subtitle}"/> 
-											<label>Subtitle</label>
-										</div>
-										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="authors" value ="${book.authors}"/> 
 											<label>Authors</label>
 										</div>
@@ -63,7 +59,7 @@
 											<label>Average Rating</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="num_pages" value ="${book.num_pages}"/> 
+											<input class="form-control" type="text" name="numbers" value ="${book.numbers}"/> 
 											<label>Num pages</label>
 										</div>
 										<div class="form-floating mb-3">
