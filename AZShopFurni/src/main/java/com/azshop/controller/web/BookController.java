@@ -32,9 +32,9 @@ public class BookController extends HttpServlet {
 			List<BookModel> listBook = bookService.findWithCount(15);
 			req.setAttribute("books", listBook);
 
-			String idString = req.getParameter("id");
-			if (idString != null) {
-				int id = Integer.parseInt(req.getParameter("id"));
+			String id = req.getParameter("id");
+			System.out.println(id);
+			if (id != null) {				
 				BookModel bookModel = bookService.findOne(id);
 				req.setAttribute("book", bookModel);
 				req.getRequestDispatcher("/views/web/bookdetail.jsp").forward(req, resp);

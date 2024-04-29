@@ -40,7 +40,6 @@ public class BookDAOImpl implements IBookDAO {
                 bookModel.setIsbn13(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn13"))));
                 bookModel.setIsbn10(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn10"))));
                 bookModel.setTitle(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("title"))));
-                bookModel.setSubtitle(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("subtitle"))));
                 bookModel.setAuthors(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("authors"))));
                 bookModel.setCategories(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("categories"))));
                 bookModel.setThumbnail(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("thumbnail"))));
@@ -64,10 +63,10 @@ public class BookDAOImpl implements IBookDAO {
 
         		byte[] numPagesBytes = result.getValue(DETAIL_CF, Bytes.toBytes("num_pages"));
         		if (numPagesBytes != null && numPagesBytes.length >= Bytes.SIZEOF_INT) {
-        			bookModel.setNum_pages(Bytes.toInt(numPagesBytes));
+        			bookModel.setNumbers(Bytes.toInt(numPagesBytes));
         		} else {
         			// Handle null value or insufficient byte array length
-        			bookModel.setNum_pages(0); // Set a default value or log a message
+        			bookModel.setNumbers(0); // Set a default value or log a message
         		}
 
         		byte[] ratingsCountBytes = result.getValue(DETAIL_CF, Bytes.toBytes("ratings_count"));
@@ -103,22 +102,25 @@ public class BookDAOImpl implements IBookDAO {
 				bookmodel.setIsbn13(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn13"))));
 				bookmodel.setIsbn10(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn10"))));
 				bookmodel.setTitle(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("title"))));
-				bookmodel.setSubtitle(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("subtitle"))));
 				bookmodel.setAuthors(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("authors"))));
 				bookmodel.setCategories(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("categories"))));
 				bookmodel.setThumbnail(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("thumbnail"))));
 				bookmodel.setDescription(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("description")))); // Family - qualifier
 				bookmodel.setPublished_year(Bytes.toInt(result.getValue(DETAIL_CF, Bytes.toBytes("published_year"))));
 				bookmodel.setAverage_rating(Bytes.toInt(result.getValue(DETAIL_CF, Bytes.toBytes("average_rating"))));
-				bookmodel.setNum_pages(Bytes.toInt(result.getValue(DETAIL_CF, Bytes.toBytes("num_pages"))));
+				bookmodel.setNumbers(Bytes.toInt(result.getValue(DETAIL_CF, Bytes.toBytes("numbers"))));
 				bookmodel.setRatings_count(Bytes.toInt(result.getValue(DETAIL_CF, Bytes.toBytes("ratings_count"))));
 			} 
+			else {
+				System.out.println("Empty");
+			}
 		}catch (Exception e) {
 				// TODO: handle exception
 				e.printStackTrace();
 			}
 		return bookmodel;
 	}
+	
 	@Override
 	public List<BookModel> findByName(String key) {
 		// TODO Auto-generated method stub
@@ -168,7 +170,6 @@ public class BookDAOImpl implements IBookDAO {
 		book.setIsbn13(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn13"))));
 		book.setIsbn10(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn10"))));
 		book.setTitle(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("title"))));
-		book.setSubtitle(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("subtitle"))));
 		book.setAuthors(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("authors"))));
 		book.setCategories(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("categories"))));
 		book.setThumbnail(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("thumbnail"))));
@@ -190,12 +191,12 @@ public class BookDAOImpl implements IBookDAO {
 			book.setAverage_rating(0.0f); // Set a default value or log a message
 		}
 
-		byte[] numPagesBytes = result.getValue(DETAIL_CF, Bytes.toBytes("num_pages"));
+		byte[] numPagesBytes = result.getValue(DETAIL_CF, Bytes.toBytes("numbers"));
 		if (numPagesBytes != null && numPagesBytes.length >= Bytes.SIZEOF_INT) {
-			book.setNum_pages(Bytes.toInt(numPagesBytes));
+			book.setNumbers(Bytes.toInt(numPagesBytes));
 		} else {
 			// Handle null value or insufficient byte array length
-			book.setNum_pages(0); // Set a default value or log a message
+			book.setNumbers(0); // Set a default value or log a message
 		}
 
 		byte[] ratingsCountBytes = result.getValue(DETAIL_CF, Bytes.toBytes("ratings_count"));

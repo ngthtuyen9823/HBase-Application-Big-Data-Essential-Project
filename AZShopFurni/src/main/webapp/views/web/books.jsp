@@ -13,7 +13,112 @@
 	<!-- Product -->
 	<section class="bg0 p-t-23 p-b-130">
 		<div class="container">
-			<!-- List books -->
+
+			<div class="flex-w flex-sb-m p-b-52">
+				<div class="flex-w flex-c-m m-tb-10">
+					<div
+						class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 js-show-filter">
+						<i
+							class="icon-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-filter-list"></i>
+						<i
+							class="icon-close-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
+						Lọc
+					</div>
+					<div
+						class="flex-c-m stext-106 cl6 size-105 bor4 pointer hov-btn3 trans-04 m-tb-4 js-show-search">
+						<i class="icon-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-search"></i>
+						<i
+							class="icon-close-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
+						Tìm kiếm
+					</div>
+				</div>
+				<!-- Search product -->
+				<form class="dis-none panel-search w-full p-t-10 p-b-15" action="#"
+					method="get">
+					<div class="dis-none panel-search w-full p-t-10 p-b-15">
+						<div class="bor8 dis-flex p-l-15">
+							<button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04 ">
+								<i class="zmdi zmdi-search"></i>
+							</button>
+							<datalist id="listHistory">
+								<%-- <c:forEach var="i" items="${history}">
+									<option value="${i.history}">
+								</c:forEach> --%>
+							</datalist>
+							<%-- 	<input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text"
+								list="listHistory" name="keyword"
+								placeholder="<c:if test="{keyword==null}">Tìm kiếm</c:if>${keyword}"> --%>
+						</div>
+					</div>
+				</form>
+				<!-- Filter -->
+				<div class="dis-none panel-filter w-full p-t-10">
+					<div
+						class="wrap-filter flex-w bg6 w-full p-lr-40 p-t-27 p-lr-15-sm">
+						<div class="filter-col2 p-r-15 p-b-27">
+							<div class="mtext-102 cl2 p-b-15">Đánh giá</div>
+							<ul>
+								<li class="p-b-6">
+									<button onclick="changeRating('5')"
+										class="filter-link stext-106 trans-04 ${rating == '5' ? 'filter-link-active' : ''}">
+										<i class="fas fa-star" style="color: gold;"></i><i
+											class="fas fa-star" style="color: gold;"></i><i
+											class="fas fa-star" style="color: gold;"></i><i
+											class="fas fa-star" style="color: gold;"></i><i
+											class="fas fa-star" style="color: gold;"></i>
+									</button>
+								</li>
+								<li class="p-b-6">
+									<button onclick="changeRating('4')"
+										class="filter-link stext-106 trans-04 ${rating == '4' ? 'filter-link-active' : ''}">
+										<i class="fas fa-star" style="color: gold;"></i><i
+											class="fas fa-star" style="color: gold;"></i><i
+											class="fas fa-star" style="color: gold;"></i><i
+											class="fas fa-star" style="color: gold;"></i><i
+											class="fa fa-star"></i> trở lên
+									</button>
+								</li>
+								<li class="p-b-6">
+									<button onclick="changeRating('3')"
+										class="filter-link stext-106 trans-04 ${rating == '3' ? 'filter-link-active' : ''}">
+										<i class="fas fa-star" style="color: gold;"></i><i
+											class="fas fa-star" style="color: gold;"></i><i
+											class="fas fa-star" style="color: gold;"></i><i
+											class="fa fa-star"></i><i class="fa fa-star"></i> trở lên
+									</button>
+								</li>
+								<li class="p-b-6">
+									<button onclick="changeRating('2')"
+										class="filter-link stext-106 trans-04 ${rating == '2' ? 'filter-link-active' : ''}">
+										<i class="fas fa-star" style="color: gold;"></i><i
+											class="fas fa-star" style="color: gold;"></i><i
+											class="fa fa-star"></i><i class="fa fa-star"></i><i
+											class="fa fa-star"></i> trở lên
+									</button>
+								</li>
+								<li class="p-b-6">
+									<button onclick="changeRating('1')"
+										class="filter-link stext-106 trans-04 ${rating == '1' ? 'filter-link-active' : ''}">
+										<i class="fas fa-star" style="color: gold;"></i><i
+											class="fa fa-star"></i><i class="fa fa-star"></i><i
+											class="fa fa-star"></i><i class="fa fa-star"></i> trở lên
+									</button>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<c:if test="${books.size()== 0 && keyword!=null}">
+				<div
+					style="display: flex; justify-content: center; align-items: center;">
+
+					<img alt="img"
+						src="https://storage.googleapis.com/web-budget/Image/Other/a60759ad1dabe909c46a817ecbf71878.png">
+					<div>Không tìm thấy sản phẩm nào phù hợp</div>
+				</div>
+			</c:if>
+			<!-- List Products -->
 			<div class="row isotope-grid">
 				<c:if test="${books.size() > 0}">
 					<c:forEach items="${books}" var="item">
@@ -21,40 +126,75 @@
 							<div class="block2">
 								<div class="block2-pic hov-img0 product-image-size">
 									<img src="${item.thumbnail}" alt="IMG-PRODUCT"> <a
-										href='<c:url value="/books?id=${item.isbn13}"/>'
+										href='<c:url value="/books?id=${item.isbn10}"/>'
 										class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04">
 										Xem chi tiết</a>
 								</div>
 
 								<div class="block2-txt flex-w flex-t p-t-14">
 									<div class="block2-txt-child1 flex-col-l ">
-										<a href='<c:url value="/books?id=${item.isbn13}"/>'
+										<a href='<c:url value="/books?id=${item.isbn10}"/>'
 											class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
 											${item.title} </a> <span class="stext-105 cl3">
-											${item.description} </span> <span class="stext-105 cl3"> <i
-											class="fas fa-star"
-											style="${item.average_rating >= 1 ? 'color: gold;' : ''}"></i>
-											<i class="fas fa-star"
-											style="${item.average_rating >= 2 ? 'color: gold;' : ''}"></i>
-											<i class="fas fa-star"
-											style="${item.average_rating >= 3 ? 'color: gold;' : ''}"></i>
-											<i class="fas fa-star"
-											style="${item.average_rating >= 4 ? 'color: gold;' : ''}"></i>
-											<i class="fas fa-star"
-											style="${item.average_rating >= 5 ? 'color: gold;' : ''}"></i>
-										</span>
+											${item.description} </span>
 									</div>
 								</div>
 							</div>
 						</div>
 					</c:forEach>
+
+					<!-- Pagination -->
+					<%-- 					<div class="flex-c-m flex-w w-full p-t-38">
+						<!-- Generate pagination links dynamically based on the totalPage -->
+						<c:forEach begin="1" end="${totalPage}" varStatus="loop">
+							<button onclick="changePage('${loop.index}')"
+								class="flex-c-m how-pagination1 trans-04 m-all-7 ${page == loop.index ? 'active-pagination1' : ''}">${loop.index}</button>
+						</c:forEach>
+					</div> --%>
 				</c:if>
 			</div>
 		</div>
 	</section>
 
 	<script>
-		
+		var params = {
+			keyword : "${keyword}",
+			cateId : "${cateId}",
+			sort : "${sort}",
+			price : "${price}",
+			rating : "${rating}",
+			page : "${page}",
+		};
+		function run() {
+			var url = "?"
+					+ Object.keys(params).map(
+							function(key) {
+								if (params[key] !== null
+										&& params[key] !== undefined
+										&& params[key] !== "") {
+									return encodeURIComponent(key) + '='
+											+ encodeURIComponent(params[key]);
+								}
+							}).filter(Boolean).join('&');
+
+			window.location.href = url;
+		}
+
+		function changSort(sort) {
+			params["sort"] = sort;
+			params["page"] = 1
+			run(0);
+		}
+		function changeRating(rating) {
+			params["rating"] = rating;
+			params["page"] = 1
+			run(0);
+		}
+
+		function changePage(page) {
+			params["page"] = page
+			run(0);
+		}
 	</script>
 
 </body>

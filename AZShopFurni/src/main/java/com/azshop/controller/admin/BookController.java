@@ -37,7 +37,6 @@ public class BookController {
                 bookModel.setIsbn13(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn13"))));
                 bookModel.setIsbn10(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn10"))));
                 bookModel.setTitle(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("title"))));
-                bookModel.setSubtitle(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("subtitle"))));
                 bookModel.setAuthors(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("authors"))));
                 bookModel.setCategories(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("categories"))));
                 bookModel.setThumbnail(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("thumbnail"))));
@@ -61,10 +60,10 @@ public class BookController {
 
         		byte[] numPagesBytes = result.getValue(DETAIL_CF, Bytes.toBytes("num_pages"));
         		if (numPagesBytes != null && numPagesBytes.length >= Bytes.SIZEOF_INT) {
-        			bookModel.setNum_pages(Bytes.toInt(numPagesBytes));
+        			bookModel.setNumbers(Bytes.toInt(numPagesBytes));
         		} else {
         			// Handle null value or insufficient byte array length
-        			bookModel.setNum_pages(0); // Set a default value or log a message
+        			bookModel.setNumbers(0); // Set a default value or log a message
         		}
 
         		byte[] ratingsCountBytes = result.getValue(DETAIL_CF, Bytes.toBytes("ratings_count"));
