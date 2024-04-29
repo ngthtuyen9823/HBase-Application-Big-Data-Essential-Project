@@ -18,45 +18,24 @@ import com.azshop.dao.IBookDAO;
 import com.azshop.dao.impl.BookDAOImpl;
 import com.azshop.models.BookModel;
 
-public class BookController {
-	private static final byte[] INFO_CF = Bytes.toBytes("info");
-	private static final byte[] DETAIL_CF = Bytes.toBytes("detail");
-	public static void main(String[] args) throws IOException {
-		Configuration conf = new Configuration();
-        Connection connection = ConnectionFactory.createConnection(conf);
-        Table table = connection.getTable(TableName.valueOf("books"));
-        List<BookModel> listBook = new ArrayList<>();
-        try {
-            Scan scan = new Scan();
-            scan.addFamily(INFO_CF);
-            scan.addFamily(DETAIL_CF);
-            ResultScanner scanner = table.getScanner(scan);
-            for (Result result : scanner) {
-                // Process each row and create a BookModel
-            	BookModel bookModel = new BookModel();
-                bookModel.setIsbn13(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn13"))));
-                bookModel.setIsbn10(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn10"))));
-                bookModel.setTitle(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("title"))));
-                bookModel.setAuthors(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("authors"))));
-                bookModel.setCategories(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("categories"))));
-                bookModel.setThumbnail(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("thumbnail"))));
-                bookModel.setDescription(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("description"))));
-                
-                byte[] publishedYearBytes = result.getValue(DETAIL_CF, Bytes.toBytes("published_year"));
-        		if (publishedYearBytes != null && publishedYearBytes.length >= Bytes.SIZEOF_INT) {
-        			bookModel.setPublished_year(Bytes.toInt(publishedYearBytes));
-        		} else {
-        			// Handle null value or insufficient byte array length
-        			bookModel.setPublished_year(0); // Set a default value or log a message
-        		}
+@WebServlet(urlPatterns = { "/adminBook", "/adminInsertBook", "/adminUpdateBook" })
+public class BookController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	IBookService bookService = new BookServiceImpl();
 
-        		byte[] averageRatingBytes = result.getValue(DETAIL_CF, Bytes.toBytes("average_rating"));
-        		if (averageRatingBytes != null && averageRatingBytes.length >= Bytes.SIZEOF_FLOAT) {
-        			bookModel.setAverage_rating(Bytes.toFloat(averageRatingBytes));
-        		} else {
-        			// Handle null value or insufficient byte array length
-        			bookModel.setAverage_rating(0.0f); // Set a default value or log a message
-        		}
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.setContentType("text/html");
+		resp.setCharacterEncoding("UTF-8");
+		req.setCharacterEncoding("UTF-8");
+		String url = req.getRequestURI().toString();
+		if (url.contains("/adminBook")) {
+			ListBook(req, resp);
+		} else if (url.contains("adminInsertBook")) {
+			insert(req, resp);
+		} else if (url.contains("adminUpdateBook")) {
+			getBookUpdate(req, resp) ;
+		}
 
         		byte[] numPagesBytes = result.getValue(DETAIL_CF, Bytes.toBytes("num_pages"));
         		if (numPagesBytes != null && numPagesBytes.length >= Bytes.SIZEOF_INT) {
@@ -66,13 +45,20 @@ public class BookController {
         			bookModel.setNumbers(0); // Set a default value or log a message
         		}
 
-        		byte[] ratingsCountBytes = result.getValue(DETAIL_CF, Bytes.toBytes("ratings_count"));
-        		if (ratingsCountBytes != null && ratingsCountBytes.length >= Bytes.SIZEOF_INT) {
-        			bookModel.setRatings_count(Bytes.toInt(ratingsCountBytes));
-        		} else {
-        			// Handle null value or insufficient byte array length
-        			bookModel.setRatings_count(0); // Set a default value or log a message
-        		}
+	private void getBookUpdate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String bookID = req.getParameter("bookID");
+		BookModel book = bookService.findOne(bookID);
+		req.setAttribute("book", book);
+		RequestDispatcher rd = req.getRequestDispatcher("/views/admin/updateBook.jsp");
+		rd.forward(req, resp);
+	}
+
+	private void ListBook(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		List<BookModel> listBook = bookService.findAll();
+		req.setAttribute("books", listBook);
+		req.getRequestDispatcher("/views/admin/books.jsp").forward(req, resp);
+
+	}
 
                 // Print or use the bookModel object
                 listBook.add(bookModel);
@@ -83,6 +69,91 @@ public class BookController {
         }
         System.out.println(listBook.get(2).getAuthors());
 
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String url = req.getRequestURI().toString();
+		req.setCharacterEncoding("UTF-8");
+		resp.setCharacterEncoding("UTF-8");
+		if (url.contains("adminInsertBook")) {
+			postinsert(req, resp);
+		} else if (url.contains("adminUpdateBook")) {
+			updateBook(req, resp);
+		}
 	}
 
+	private void updateBook(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		try {
+			String isbn13 = req.getParameter("isbn13");
+			String isbn10 = req.getParameter("isbn10");
+			String title = req.getParameter("title");
+			String subtitle = req.getParameter("subtitle");
+			String authors = req.getParameter("authors");
+			String categories = req.getParameter("categories");
+			String thumbnail = req.getParameter("thumbnail");
+			String description = req.getParameter("description");
+			int published_year = Integer.parseInt(req.getParameter("published_year"));
+			float average_rating = Float.parseFloat(req.getParameter("average_rating"));
+			int num_pages = Integer.parseInt(req.getParameter("num_pages"));
+			int ratings_count = Integer.parseInt(req.getParameter("ratings_count"));
+
+			BookModel book = new BookModel();
+			book.setIsbn13(isbn13);
+			book.setIsbn10(isbn10);
+			book.setTitle(title);
+			book.setSubtitle(subtitle);
+			book.setAuthors(authors);
+			book.setDescription(description);
+			book.setCategories(categories);
+			book.setThumbnail(thumbnail);
+			book.setPublished_year(published_year);
+			book.setAverage_rating(average_rating);
+			book.setNum_pages(num_pages);
+			book.setRatings_count(ratings_count);
+
+			bookService.update(book);
+
+//			MessageUtil.showMessage(req, "addSuccess");
+		} catch (Exception ex) {
+//			MessageUtil.showMessage(req, "addFail");
+		}
+		ListBook(req, resp);
+	}
+
+	private void postinsert(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		try {
+			String isbn13 = req.getParameter("isbn13");
+			String isbn10 = req.getParameter("isbn10");
+			String title = req.getParameter("title");
+			String subtitle = req.getParameter("subtitle");
+			String authors = req.getParameter("authors");
+			String categories = req.getParameter("categories");
+			String thumbnail = req.getParameter("thumbnail");
+			String description = req.getParameter("description");
+			int published_year = Integer.parseInt(req.getParameter("published_year"));
+			float average_rating = Float.parseFloat(req.getParameter("average_rating"));
+			int num_pages = Integer.parseInt(req.getParameter("num_pages"));
+			int ratings_count = Integer.parseInt(req.getParameter("ratings_count"));
+
+			BookModel book = new BookModel();
+			book.setIsbn13(isbn13);
+			book.setIsbn10(isbn10);
+			book.setTitle(title);
+			book.setSubtitle(subtitle);
+			book.setAuthors(authors);
+			book.setDescription(description);
+			book.setCategories(categories);
+			book.setThumbnail(thumbnail);
+			book.setPublished_year(published_year);
+			book.setAverage_rating(average_rating);
+			book.setNum_pages(num_pages);
+			book.setRatings_count(ratings_count);
+
+			bookService.insert(book);
+
+//			MessageUtil.showMessage(req, "addSuccess");
+		} catch (Exception ex) {
+//			MessageUtil.showMessage(req, "addFail");
+		}
+		ListBook(req, resp);
+	}
 }
