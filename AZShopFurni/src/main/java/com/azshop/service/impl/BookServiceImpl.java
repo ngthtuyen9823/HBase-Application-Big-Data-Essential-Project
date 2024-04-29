@@ -17,9 +17,8 @@ public class BookServiceImpl implements IBookService {
 	}
 
 	@Override
-	public BookModel findOne(String id) {
-		// TODO Auto-generated method stub
-		return null;
+	public BookModel findOne(String id) throws IOException {
+		return bookDAO.findOne(id);
 	}
 
 	@Override
