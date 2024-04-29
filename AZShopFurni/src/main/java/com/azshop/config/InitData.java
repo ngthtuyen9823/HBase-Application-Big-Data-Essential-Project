@@ -19,12 +19,11 @@ import org.apache.hadoop.hbase.util.Bytes;
 public class InitData {
     public void init() {
         String dataFileName = "etc/books.csv";
-        System.out.println("file csv");
 
         Configuration conf = new Configuration();
 
         try (Connection connection = ConnectionFactory.createConnection(conf);
-             Admin admin = connection.getAdmin()) {
+            Admin admin = connection.getAdmin()) {
             TableName tableName = TableName.valueOf("books");
             TableDescriptorBuilder tableDescriptorBuilder = TableDescriptorBuilder.newBuilder(tableName);
             tableDescriptorBuilder.setColumnFamily(ColumnFamilyDescriptorBuilder.of("info"));
@@ -41,31 +40,29 @@ public class InitData {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     String[] values = line.split(","); 
-                    if (values.length < 12) {
-                        System.err.println("Invalid data format. Skipping line: " + line);
+                    if (values.length < 11) {
+//                        System.err.println("Invalid data format. Skipping line: " + line);
                         continue;
                     }
 
                     String isbn13 = values[0];
                     String isbn10 = values[1];
                     String title = values[2];
-                    String subtitle = values[3];
-                    String authors = values[4];
-                    String categories = values[5];
-                    String thumbnail = values[6];
-                    String description = values[7];
-                    String publishedYear = values[8];
-                    String averageRating = values[9];
-                    String numPages = values[10];
-                    String ratingsCount = values[11];
+                    String authors = values[3];
+                    String categories = values[4];
+                    String thumbnail = values[5];
+                    String description = values[6];
+                    String publishedYear = values[7];
+                    String averageRating = values[8];
+                    String numbers = values[9];
+                    String ratingsCount = values[10];
 
-                    String rowKey = isbn13;
+                    String rowKey = isbn10;
 
                     Put put = new Put(Bytes.toBytes(rowKey));
                     put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("isbn13"), Bytes.toBytes(isbn13));
                     put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("isbn10"), Bytes.toBytes(isbn10));
                     put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("title"), Bytes.toBytes(title));
-                    put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("subtitle"), Bytes.toBytes(subtitle));
                     put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("authors"), Bytes.toBytes(authors));
                     put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("categories"), Bytes.toBytes(categories));
                     put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("thumbnail"), Bytes.toBytes(thumbnail));
@@ -74,7 +71,7 @@ public class InitData {
                             Bytes.toBytes(publishedYear));
                     put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("average_rating"),
                             Bytes.toBytes(averageRating));
-                    put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("num_pages"), Bytes.toBytes(numPages));
+                    put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("numbers"), Bytes.toBytes(numbers));
                     put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("ratings_count"), Bytes.toBytes(ratingsCount));
 
                     table.put(put);

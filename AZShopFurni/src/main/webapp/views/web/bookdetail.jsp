@@ -6,13 +6,11 @@
 	<div class="container pt-5">
 		<nav class="d-flex">
 			<h6 class="mb-0">
-				<%-- <a href="<c:url value='/home'/>" class="link-dark"
+				<a href="<c:url value='/home'/>" class="link-dark"
 					style="text-decoration: none;">Home</a> <span class="mx-2">
-					> </span> <a
-					href="<c:url value='/books?cateId=${book.categoryID}'/>"
-					class="link-dark" style="text-decoration: none;">${book.categoryName}</a>
+					> </span> <a href="#" class="link-dark" style="text-decoration: none;">${book.categories}</a>
 				<span class="mx-2"> > </span> <a href="#" class="link-dark"
-					style="text-decoration: none;">${book.bookName}</a> --%>
+					style="text-decoration: none;">${book.title}</a>
 			</h6>
 		</nav>
 	</div>
@@ -25,22 +23,10 @@
 					<a id="mainImageLink" data-fslightbox="mygalley" class="rounded-4"
 						target="_blank" data-type="image" href="#"> <img
 						id="mainImage"
-						style="max-width: 100%; max-height: 100vh; margin: auto;"
+						style="max-width: 100%; height: 350px; margin: auto;"
 						class="rounded-4 fit" src="${book.thumbnail}" />
 					</a>
 				</div>
-				<%-- <div class="d-flex justify-content-center mb-3 book-container">
-					<c:forEach items="${book.listItem}" var="item" varStatus="loop">
-						<div class="" style="flex: 0 0 auto;">
-							<a data-fslightbox="mygalley"
-								class="border mx-1 rounded-2 item-thumb" target="_blank"
-								data-type="image" onmouseover="changeMainImage('${item.image}')"
-								style="cursor: pointer;"> <img width="100" height="100"
-								class="rounded-2" src="${item.image}" />
-							</a>
-						</div>
-					</c:forEach>
-				</div> --%>
 			</aside>
 			<main class="col-lg-6">
 				<div class="ps-lg-3">
@@ -59,27 +45,24 @@
 								style="${book.average_rating >= 5 ? 'color: gold;' : ''}"></i>
 							</span>
 						</div>
-						<span style="padding-left: 1rem;" class="text-muted"> |
-							${book.description}</span>
-					</div>
 
+					</div>
+					<div class="mb-3">${book.description}</div>
 
 					<div class="row">
-						<dt class="col-3">Subtitle</dt>
-						<dd class="col-9">${book.subtitle}</dd>
-						<dt class="col-3">Author</dt>
+						<dt class="col-3">Tác giả</dt>
 						<dd class="col-9">${book.authors}</dd>
-						<dt class="col-3">Category</dt>
+						<dt class="col-3">Thể loại</dt>
 						<dd class="col-9">${book.categories}</dd>
+						<dt class="col-3">Kho</dt>
+						<dd class="col-9">${book.numbers}</dd>
+
 					</div>
-					<div class="row">
-						<dt class="col-3">Description</dt>
-						<dd class="col-9"></dd>
-					</div>
+					<div class="row"></div>
 					<hr />
 					<div class="row mb-3 input-group">
 
-						<!-- <label
+						<label
 							style="font-weight: 700; margin-left: 1rem; margin-right: 3rem;"
 							class="mb-2">Số lượng </label>
 						<button class="px-3" type="button" id="button-addon1"
@@ -93,7 +76,7 @@
 						<button class="px-3" type="button" id="button-addon2"
 							data-mdb-ripple-color="dark" onclick="updateQuantity(1)">
 							<i class="fas fa-plus"></i>
-						</button> -->
+						</button>
 					</div>
 					<div class="mt-5 row">
 						<dd class="col-5">
@@ -107,7 +90,7 @@
 									<input onclick="addToCart()"
 										style="width: 100%; padding: 1rem; cursor: pointer; float: right"
 										class="btn btn-primary shadow-0 flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail"
-										value="Thêm vào giỏ hàng" readonly
+										value="Đặt mượn" readonly
 										onmouseover="this.style.cursor='pointer';"
 										onmouseout="this.style.cursor='default';" />
 								</div>
@@ -119,4 +102,40 @@
 		</div>
 	</div>
 </section>
-
+<%-- <section class="product">
+	<h2 class="product-category">sản phẩm cùng loại</h2>
+	<button class="pre-btn">
+		<img src="images/arrow.png" alt="">
+	</button>
+	<button class="nxt-btn">
+		<img src="images/arrow.png" alt="">
+	</button>
+	<div class="product-container">
+		<c:forEach items="${cateProList}" var="item" varStatus="loop">
+			<div class="product-card">
+				<div class="product-image">
+					<a href="<c:url value='/products?id=${item.productID}' />"
+						class="product-image"><img src="${item.displayedImage}"
+						class="product-thumb" alt=""> </a>
+				</div>
+				<div class="product-info">
+					<h2 class="product-brand">${item.productName}</h2>
+					<p class="product-short-description">${item.description}</p>
+					<c:if test="${item.displayedPromotionPrice ne 0}">
+						<span class="price"><fmt:formatNumber type="currency"
+								value="${item.displayedPromotionPrice}" currencyCode="VND"
+								pattern="#,##0 VND" var="formattedPrice" />${formattedPrice}</span>
+						<span class="actual-price"><fmt:formatNumber
+								type="currency" value="${item.displayedOriginalPrice}"
+								currencyCode="VND" pattern="#,##0 VND" var="formattedPrice" />${formattedPrice}</span>
+					</c:if>
+					<c:if test="${item.displayedPromotionPrice eq 0}">
+						<span class="price"><fmt:formatNumber type="currency"
+								value="${item.displayedOriginalPrice}" currencyCode="VND"
+								pattern="#,##0 VND" var="formattedPrice" />${formattedPrice}</span>
+					</c:if>
+				</div>
+			</div>
+		</c:forEach>
+	</div>
+</section> --%>
