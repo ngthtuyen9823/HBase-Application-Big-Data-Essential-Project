@@ -1,8 +1,15 @@
 package com.azshop.service.impl;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import org.apache.hadoop.hbase.wal.EntryBuffers;
+
 import com.azshop.dao.IBookDAO;
 import com.azshop.dao.impl.BookDAOImpl;
 import com.azshop.models.BookModel;
@@ -79,7 +86,7 @@ public class BookServiceImpl implements IBookService {
 		// TODO Auto-generated method stub
 		return bookDAO.filterByRating(rate);
 	}
-
+	
 	@Override
 	public List<Object> findTop() throws IOException{
 		List<BookModel> listBook = bookDAO.findAll();
@@ -131,13 +138,20 @@ public class BookServiceImpl implements IBookService {
 				.sorted(Map.Entry.<Integer, Long>comparingByKey())
 		 		.collect(Collectors.toList());	
 
+		List<Entry<Integer, Long>> countRatingPubYear = listBook
+				.stream()
+				.collect(Collectors.groupingBy(BookModel::getPublished_year, Collectors.summingLong(BookModel::getRatings_count)))
+				.entrySet().stream()
+				.sorted(Map.Entry.<Integer, Long>comparingByKey())
+		 		.collect(Collectors.toList());	
+
 		List<Entry<String, Long>> topCountCate = listBook
 				.stream()
 				.collect(Collectors.groupingBy(BookModel::getCategories, Collectors.counting()))
 				.entrySet().stream()
 				.sorted(Map.Entry.<String, Long>comparingByKey()
-				.reversed())
 				.limit(5)
+				.reversed())
 		 		.collect(Collectors.toList());	
 		
 		List<Object> list = new ArrayList<Object>();
@@ -152,8 +166,8 @@ public class BookServiceImpl implements IBookService {
 	
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
-		IBookService bookService = new BookServiceImpl();
 		try {
+		IBookService bookService = new BookServiceImpl();
 			List<Object> list =  bookService.findToReport();
 			List<Entry<Integer, Long>> countPubYear = (List<Entry<Integer, Long>>)list.get(2);
 			
@@ -171,10 +185,10 @@ public class BookServiceImpl implements IBookService {
 		// TODO Auto-generated method stub
 		return bookDAO.findSameCategory(categories);
 	}
-
 	@Override
+
 	public List<String> findAllCategories() {
-		// TODO Auto-generated method stub
 		return bookDAO.findAllCategories();
+		// TODO Auto-generated method stub
 	}
 }
