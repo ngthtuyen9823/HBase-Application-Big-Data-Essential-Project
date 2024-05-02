@@ -30,33 +30,25 @@
 						<i
 							class="icon-close-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
 						Tìm kiếm
+						
 					</div>
 				</div>
 				<!-- Search product -->
-				<form class="dis-none panel-search w-full p-t-10 p-b-15" action="#"
-					method="get">
-					<div class="dis-none panel-search w-full p-t-10 p-b-15">
-						<div class="bor8 dis-flex p-l-15">
-							<button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04 ">
-								<i class="zmdi zmdi-search"></i>
-							</button>
-							<datalist id="listHistory">
-								<%-- <c:forEach var="i" items="${history}">
-									<option value="${i.history}">
-								</c:forEach> --%>
-							</datalist>
-							<%-- 	<input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text"
-								list="listHistory" name="keyword"
-								placeholder="<c:if test="{keyword==null}">Tìm kiếm</c:if>${keyword}"> --%>
-						</div>
-					</div>
-				</form>
+				<form class="dis-none panel-search w-full p-t-10 p-b-15" action="/AZShopFurni/search" method="get">
+  <div class="bor8 dis-flex p-l-15">
+    <button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04 ">
+      <i class="zmdi zmdi-search"></i>
+    </button>
+    <input class="form-control" type="text" name="keySearch" placeholder="Tìm kiếm..." />
+  </div>
+</form>
+
 				<!-- Filter -->
 				<div class="dis-none panel-filter w-full p-t-10">
 					<div
 						class="wrap-filter flex-w bg6 w-full p-lr-40 p-t-27 p-lr-15-sm">
 						<div class="filter-col2 p-r-15 p-b-27">
-							<div class="mtext-102 cl2 p-b-15">Đánh giá</div>
+							<div class="mtext-102 cl2 p-b-15">Phân Loại</div>
 							<ul>
 								<li class="p-b-6">
 									<button onclick="changeRating('5')"

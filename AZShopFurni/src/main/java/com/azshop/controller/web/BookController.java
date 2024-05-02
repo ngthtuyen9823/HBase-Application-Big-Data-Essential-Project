@@ -41,11 +41,29 @@ public class BookController extends HttpServlet {
 				return; // Return after forwarding, to avoid further processing
 			}
 		}
+		
+		if (req.getRequestURI().contains("search")) {
+			String key = req.getParameter("keySearch");
+			System.out.println(key);
+			List<BookModel> listBook = bookService.findByName(key);
+			if (key != null) {
+				req.setAttribute("book", listBook);
+				req.getRequestDispatcher("/views/web/books.jsp").forward(req, resp);
+				return;
+			}
+			
+		}
+		
 		req.getRequestDispatcher("/views/web/books.jsp").forward(req, resp);
+		
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+		
 	}
+	
+	
+	
+	
 }

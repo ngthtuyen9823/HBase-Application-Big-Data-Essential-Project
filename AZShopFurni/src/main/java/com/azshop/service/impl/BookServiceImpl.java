@@ -28,15 +28,15 @@ public class BookServiceImpl implements IBookService {
 	}
 
 	@Override
-	public List<BookModel> findByName(String key) {
+	public List<BookModel> findByName(String key) throws IOException {
 		// TODO Auto-generated method stub
-		return null;
+		return bookDAO.findByName(key);
 	}
 
 	@Override
-	public List<BookModel> findByCategory(int cateId) {
+	public List<BookModel> findByCategory(String cate) throws IOException {
 		// TODO Auto-generated method stub
-		return null;
+		return bookDAO.findByCategory(cate);
 	}
 
 	@Override

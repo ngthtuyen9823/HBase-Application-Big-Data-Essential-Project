@@ -10,9 +10,9 @@ public interface IBookService {
 
 	BookModel findOne(String id) throws IOException;
 
-	List<BookModel> findByName(String key);
+	List<BookModel> findByName(String key) throws IOException;
 
-	List<BookModel> findByCategory(int cateId);
+	List<BookModel> findByCategory(String cate) throws IOException;
 
 	List<BookModel> findByAuthor(String key);
 
