@@ -40,9 +40,9 @@ public class BookServiceImpl implements IBookService {
 	}
 
 	@Override
-	public List<BookModel> findByAuthor(String key) {
+	public List<BookModel> findByAuthor(String key)throws IOException {
 		// TODO Auto-generated method stub
-		return null;
+		return bookDAO.findByAuthor(key);
 	}
 
 	@Override
@@ -69,9 +69,9 @@ public class BookServiceImpl implements IBookService {
 	}
 
 	@Override
-	public List<BookModel> filterByRating(int rate) {
+	public List<BookModel> filterByRating(int rate) throws IOException {
 		// TODO Auto-generated method stub
-		return null;
+		return bookDAO.filterByRating(rate);
 	}
 
 }

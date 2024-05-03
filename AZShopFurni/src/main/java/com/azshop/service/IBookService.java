@@ -14,7 +14,7 @@ public interface IBookService {
 
 	List<BookModel> findByCategory(String cate) throws IOException;
 
-	List<BookModel> findByAuthor(String key);
+	List<BookModel> findByAuthor(String key) throws IOException;
 
 	List<BookModel> findWithCount(int count);
 
@@ -24,5 +24,5 @@ public interface IBookService {
 
 	void update(BookModel model);
 
-	List<BookModel> filterByRating(int rate);
+	List<BookModel> filterByRating(int rate)  throws IOException;
 }
