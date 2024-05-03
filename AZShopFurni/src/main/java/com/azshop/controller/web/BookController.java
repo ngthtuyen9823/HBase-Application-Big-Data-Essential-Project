@@ -33,7 +33,6 @@ public class BookController extends HttpServlet {
 			req.setAttribute("books", listBook);
 
 			String id = req.getParameter("id");
-			System.out.println(id);
 			if (id != null) {				
 				BookModel bookModel = bookService.findOne(id);
 				req.setAttribute("book", bookModel);
@@ -43,17 +42,41 @@ public class BookController extends HttpServlet {
 		}
 		
 		if (req.getRequestURI().contains("search")) {
+			if(req.getParameter("keySearch") != null) {
 			String key = req.getParameter("keySearch");
 			System.out.println(key);
 			List<BookModel> listBook = bookService.findByName(key);
-			if (key != null) {
-				req.setAttribute("book", listBook);
+			
+				req.setAttribute("books", listBook);
 				req.getRequestDispatcher("/views/web/books.jsp").forward(req, resp);
 				return;
 			}
+			if(req.getParameter("authorsKey") != null) {
+			String key = req.getParameter("authorsKey");
+			System.out.println(key);
+
+			List<BookModel> listBook = bookService.findByAuthor(key);
+			
+				req.setAttribute("books", listBook);
+				req.getRequestDispatcher("/views/web/books.jsp").forward(req, resp);
+				return;
+			
 			
 		}
 		
+		
+				
+			
+		}
+		if (req.getRequestURI().contains("filter")) {
+			String key =  req.getParameter("avgRating");
+			System.out.println(key);
+			List<BookModel> listBook = bookService.filterByRating(2);
+				
+				req.setAttribute("books", listBook);
+				req.getRequestDispatcher("/views/web/books.jsp").forward(req, resp);
+				return;
+		}
 		req.getRequestDispatcher("/views/web/books.jsp").forward(req, resp);
 		
 	}
