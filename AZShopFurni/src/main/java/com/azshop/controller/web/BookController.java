@@ -76,6 +76,7 @@ public class BookController extends HttpServlet {
 				req.getRequestDispatcher("/views/web/books.jsp").forward(req, resp);
 				return;
 			}
+			
 			if(req.getParameter("Cate" )!= null) {
 				String key =  req.getParameter("Cate");
 				System.out.println(key);		

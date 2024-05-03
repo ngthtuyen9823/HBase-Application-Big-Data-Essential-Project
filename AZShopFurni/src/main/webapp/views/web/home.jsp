@@ -217,6 +217,14 @@ section {
 #opacity:hover {
 	opacity: 1;
 }
+.product-container{
+padding: 0 2vw;
+}
+
+.product-image-size img {
+    width: 230px;
+    height: 340px;
+}
 </style>
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
@@ -249,7 +257,14 @@ section {
 			data-bs-slide-to="2" aria-label="Slide 3"></button>
 	</div>
 	<div class="carousel-inner">
-		<div class="carousel-item active" data-bs-interval="10000">
+		<c:forEach items="${topauthor}" var="author">
+			<div class="carousel-item active" data-bs-interval="10000">
+				<div class="d-block w-100">
+				${author}
+				</div>
+		</div>
+		</c:forEach>
+		<!-- <div class="carousel-item active" data-bs-interval="10000">
 			<img
 				src="https://theme.hstatic.net/1000280685/1000722794/14/img_slider_1.jpg?v=1313"
 				class="d-block w-100" alt="...">
@@ -264,7 +279,7 @@ section {
 				src="https://theme.hstatic.net/1000280685/1000722794/14/img_slider_5.jpg?v=1313"
 				class="d-block w-100" alt="...">
 
-		</div>
+		</div> -->
 	</div>
 	<button class="carousel-control-prev" type="button"
 		data-bs-target="#carouselExampleDark" data-bs-slide="prev">
@@ -280,11 +295,6 @@ section {
 
 <section class="list_product">
 	<div class="container">
-		<div class="model_left">
-			<img
-				src="https://theme.hstatic.net/1000280685/1000722794/14/img_banner_category.jpg?v=1313"
-				alt="">
-		</div>
 		<div class="model_right">
 			<div class="item_top item_space">
 				<img
@@ -292,13 +302,12 @@ section {
 					alt=""> <img
 					src="https://file.hstatic.net/1000280685/file/launchingg-30_f235679ca32b4364b18de112155c75e3_grande.jpg"
 					alt="">
-			</div>
-			<div class="item_bottom item_space ">
 				<img
 					src="https://file.hstatic.net/1000280685/file/4_4f7815e5896b482882e17e0280658b15_grande.jpg"
 					alt=""> <img
 					src="https://file.hstatic.net/1000280685/file/launchingg--5_623c6136ba444317b0ff7f0b4324649f_grande.jpg"
 					alt="">
+					<img title="123"><img>
 			</div>
 
 
@@ -306,7 +315,7 @@ section {
 	</div>
 </section>
 
-<section class="concept_text">
+<!-- <section class="concept_text">
 	<div class="container">
 		<div class="text_left">
 			<h3 class="text_center">Giải pháp nỗi bật toàn diện</h3>
@@ -412,7 +421,7 @@ section {
 		</div>
 	</div>
 
-</section>
+</section> -->
 
 <section class="product">
 	<h2 class="product-category">Top 5 Sách được đánh giá cao</h2>
@@ -423,41 +432,60 @@ section {
 		<img src="images/arrow.png" alt="">
 	</button>
 	<div class="product-container">
-		<%-- <c:forEach var="i" items="${products}">
-			<div class="product-card">
-				<input type="hidden" name="itemID" value="${i.get(1)}"> <input
-					type="hidden" name="productID" value="${i.get(0)}">
-				<div class="product-image">
-					<a href="<c:url value='/products?id=${i.get(0)}'/>"><img
-						src="${i.get(6)}" class="product-thumb" alt=""></a>
-				</div>
-				<div class="product-info">
-					<h2 class="product-brand">
-						<a href="<c:url value='/products?id=${i.get(0)}'/>">${i.get(2)}</a>
-					</h2>
-					<p class="product-short-description">${i.get(3)}</p>
+		<c:forEach items="${topratingbook}" var="item">
+			<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item ">
+				<div class="block2">
+					<div class="block2-pic hov-img0 product-image-size">
+						<img src="${item.thumbnail}" alt="IMG-PRODUCT" width="128" height="209"> <a
+							href='<c:url value="/books?id=${item.isbn10}"/>'
+							class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04">
+							Xem chi tiết</a>
+					</div>
 
-					<c:if test="${i.get(5) != 0}">
-						<span class="price"> <fmt:formatNumber type="currency"
-								value="${i.get(5)}" currencyCode="VND" pattern="#,##0 VND"
-								var="formattedOriginalPrice" />${formattedOriginalPrice}
-						</span>
-						<span class="actual-price"> <fmt:formatNumber
-								type="currency" value="${i.get(4)}" currencyCode="VND"
-								pattern="#,##0 VND" var="formattedOriginalPrice" />${formattedOriginalPrice}
-							${i.get(4)}
-						</span>
-					</c:if>
-					<c:if test="${i.get(5) == 0}">
-						<span class="price"> <fmt:formatNumber type="currency"
-								value="${i.get(4)}" currencyCode="VND" pattern="#,##0 VND"
-								var="formattedOriginalPrice" />${formattedOriginalPrice}
-						</span>
-					</c:if>
-
+					<div class="block2-txt flex-w flex-t p-t-14">
+						<div class="block2-txt-child1 flex-col-l ">
+							<a href='<c:url value="/books?id=${item.isbn10}"/>'
+								class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+								${item.title} </a> <span class="stext-105 cl3">
+								${item.description} </span>
+						</div>
+					</div>
 				</div>
 			</div>
-		</c:forEach> --%>
+		</c:forEach>
+	</div>
+</section>
+
+<section class="product">
+	<h2 class="product-category">Top 5 Sách được nhiều đánh giá nhất</h2>
+	<button class="pre-btn">
+		<img src="images/arrow.png" alt="">
+	</button>
+	<button class="nxt-btn">
+		<img src="images/arrow.png" alt="">
+	</button>
+	<div class="product-container">
+		<c:forEach items="${topratingcountbook}" var="item">
+			<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item ">
+				<div class="block2">
+					<div class="block2-pic hov-img0 product-image-size">
+						<img src="${item.thumbnail}" alt="IMG-PRODUCT" width="128" height="209"> <a
+							href='<c:url value="/books?id=${item.isbn10}"/>'
+							class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04">
+							Xem chi tiết</a>
+					</div>
+
+					<div class="block2-txt flex-w flex-t p-t-14">
+						<div class="block2-txt-child1 flex-col-l ">
+							<a href='<c:url value="/books?id=${item.isbn10}"/>'
+								class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+								${item.title} </a> <span class="stext-105 cl3">
+								${item.description} </span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</c:forEach>
 	</div>
 </section>
 <!-- edit slider -->

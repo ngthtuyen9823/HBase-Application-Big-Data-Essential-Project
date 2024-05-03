@@ -25,4 +25,7 @@ public interface IBookDAO {
 	void update(BookModel model);
 
 	List<BookModel> filterByRating(int desiredRating) throws IOException;
+	
+
+	List<String> findAuthor() throws IOException;
 }

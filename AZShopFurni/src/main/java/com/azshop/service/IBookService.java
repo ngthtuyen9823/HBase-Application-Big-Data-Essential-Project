@@ -4,7 +4,8 @@ import java.io.IOException;
 import java.util.List;
 
 import com.azshop.models.BookModel;
-
+import java.util.Map;
+import java.util.Map.Entry;
 public interface IBookService {
 	List<BookModel> findAll();
 
@@ -25,4 +26,9 @@ public interface IBookService {
 	void update(BookModel model);
 
 	List<BookModel> filterByRating(int rate)  throws IOException;
+List<Object> findTop() throws IOException;
+	
+	List<String> findTopAuthor() throws IOException;
+	
+	List<Object> findToReport() throws IOException;
 }
