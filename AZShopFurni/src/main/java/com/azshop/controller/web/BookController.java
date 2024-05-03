@@ -63,19 +63,28 @@ public class BookController extends HttpServlet {
 			
 			
 		}
-		
-		
 				
 			
 		}
 		if (req.getRequestURI().contains("filter")) {
-			String key =  req.getParameter("avgRating");
-			System.out.println(key);
-			List<BookModel> listBook = bookService.filterByRating(2);
+			if(req.getParameter("avgRating" )!= null) {
+			int key = Integer.parseInt(req.getParameter("avgRating"));
+			System.out.println(key);		
+			List<BookModel> listBook = bookService.filterByRating(key);
 				
 				req.setAttribute("books", listBook);
 				req.getRequestDispatcher("/views/web/books.jsp").forward(req, resp);
 				return;
+			}
+			if(req.getParameter("Cate" )!= null) {
+				String key =  req.getParameter("Cate");
+				System.out.println(key);		
+				List<BookModel> listBook = bookService.findByCategory(key);
+					
+					req.setAttribute("books", listBook);
+					req.getRequestDispatcher("/views/web/books.jsp").forward(req, resp);
+					return;
+				}
 		}
 		req.getRequestDispatcher("/views/web/books.jsp").forward(req, resp);
 		

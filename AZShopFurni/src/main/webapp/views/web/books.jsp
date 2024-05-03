@@ -32,6 +32,9 @@
 						Tìm kiếm
 						
 					</div>
+					
+
+
 				</div>
 				<!-- Search product -->
 				<form class="dis-none panel-search w-full p-t-10 p-b-15" action="/AZShopFurni/search" method="get">
@@ -55,7 +58,7 @@
 				<div class="dis-none panel-filter w-full p-t-10">
   <div class="wrap-filter flex-w bg6 w-full p-lr-40 p-t-27 p-lr-15-sm">
     <div class="filter-col2 p-r-15 p-b-27">
-      <div class="mtext-102 cl2 p-b-15">Phân Loại</div>
+      <div class="mtext-102 cl2 p-b-15">Đánh giá</div>
       <ul>
         <li class="p-b-6">
           <form action="/AZShopFurni/filter" method="get">
@@ -95,6 +98,28 @@
             <button type="submit" class="filter-link stext-106 trans-04" name="avgRating" value="1">
               <i class="fas fa-star" style="color: gold;"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> trở lên
             </button>
+          </form>
+        </li>
+      </ul>
+            <div class="mtext-102 cl2 p-b-15">Phân loại</div>
+      <ul>
+        
+        
+        
+        <li class="p-b-6">
+          <form action="/AZShopFurni/filter" method="get">
+            <input type="hidden" >
+            <button type="submit" class="filter-link stext-106 trans-04"name="Cate" value="Fiction" >
+              Fiction
+            </button>
+          </form>
+        </li>
+        <li class="p-b-6">
+          <form action="/AZShopFurni/filter" method="get">
+            <input type="hidden" >
+            <button type="submit" class="filter-link stext-106 trans-04" name="Cate" value="nonFiction">
+			Non-Fiction            
+</button>
           </form>
         </li>
       </ul>

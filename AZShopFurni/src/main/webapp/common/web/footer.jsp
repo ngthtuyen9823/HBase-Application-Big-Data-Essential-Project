@@ -13,7 +13,7 @@
 				</a>
 			</div>
 
-			<div class="col-sm-6 col-lg-3 p-b-10">
+			<!-- <div class="col-sm-6 col-lg-3 p-b-10">
 				<h4 class="stext-301 cl2 p-b-10">DANH MỤC</h4>
 
 				<ul style="padding-left: 0;">
@@ -33,7 +33,7 @@
 						class="stext-107 cl6 hov-cl1 trans-04"> Science </a></li>
 				</ul>
 			</div>
-
+ -->
 			<div class="col-sm-6 col-lg-3 p-b-10">
 				<h4 class="stext-301 cl2 p-b-10">HỖ TRỢ</h4>
 

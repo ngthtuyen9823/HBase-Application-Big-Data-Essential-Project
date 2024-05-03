@@ -60,8 +60,8 @@
 									<td>${i.description}</td>
 									<td>${i.published_year}</td>
 									<td>${i.average_rating}</td>
-									<td>${i.numbers}</td>
-									<td>${i.ratings_count}</td>
+<%-- 									<td>${i.numbers}</td>
+ --%>									<td>${i.ratings_count}</td>
 									
 									<td><div class="hidden-sm hidden-xs btn-group">
 <%-- 											<a
