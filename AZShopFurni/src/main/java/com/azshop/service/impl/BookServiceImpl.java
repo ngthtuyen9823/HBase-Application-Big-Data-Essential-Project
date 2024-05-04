@@ -165,4 +165,10 @@ public class BookServiceImpl implements IBookService {
 			e.printStackTrace();
 		}
     }
+
+	@Override
+	public List<BookModel> findSameCategory(String categories) {
+		// TODO Auto-generated method stub
+		return bookDAO.findSameCategory(categories);
+	}
 }

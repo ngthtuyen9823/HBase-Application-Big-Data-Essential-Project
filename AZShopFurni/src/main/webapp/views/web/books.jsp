@@ -150,15 +150,6 @@
 							</div>
 						</div>
 					</c:forEach>
-
-					<!-- Pagination -->
-					<%-- 					<div class="flex-c-m flex-w w-full p-t-38">
-						<!-- Generate pagination links dynamically based on the totalPage -->
-						<c:forEach begin="1" end="${totalPage}" varStatus="loop">
-							<button onclick="changePage('${loop.index}')"
-								class="flex-c-m how-pagination1 trans-04 m-all-7 ${page == loop.index ? 'active-pagination1' : ''}">${loop.index}</button>
-						</c:forEach>
-					</div> --%>
 				</c:if>
 			</div>
 		</div>

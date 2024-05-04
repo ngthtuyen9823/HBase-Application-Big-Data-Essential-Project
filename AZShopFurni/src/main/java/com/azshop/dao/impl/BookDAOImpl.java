@@ -750,6 +750,68 @@ public class BookDAOImpl implements IBookDAO {
 		}
 		return listAuthor;
 	}
+
+	@Override
+	public List<BookModel> findSameCategory(String categories) {
+	    String tableName = "books";
+	    String columnFamily = "info";
+	    String columnName = "categories";
+	    List<BookModel> listBook = new ArrayList<>();
+
+	    Configuration conf = new Configuration();
+	    try (Connection connection = ConnectionFactory.createConnection(conf);
+	         Table table = connection.getTable(TableName.valueOf(tableName))) {
+	        Scan scan = new Scan();
+	        SingleColumnValueFilter filter = new SingleColumnValueFilter(
+	            Bytes.toBytes(columnFamily),
+	            Bytes.toBytes(columnName),
+	            CompareOperator.EQUAL,
+	            new BinaryComparator(Bytes.toBytes(categories))
+	        );
+	        scan.setFilter(filter);
+
+	        try (ResultScanner scanner = table.getScanner(scan)) {
+	            for (Result result : scanner) {
+	                BookModel bookModel = new BookModel();
+	                bookModel.setIsbn13(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn13"))));
+	                bookModel.setIsbn10(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn10"))));
+	                bookModel.setTitle(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("title"))));
+	                bookModel.setAuthors(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("authors"))));
+	                bookModel.setCategories(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("categories"))));
+	                bookModel.setThumbnail(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("thumbnail"))));
+	                bookModel.setDescription(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("description"))));
+
+	                byte[] publishedYearBytes = result.getValue(DETAIL_CF, Bytes.toBytes("published_year"));
+	                if (publishedYearBytes != null && publishedYearBytes.length >= Bytes.SIZEOF_INT) {
+	                    bookModel.setPublished_year(Bytes.toInt(publishedYearBytes));
+	                } else {
+	                    bookModel.setPublished_year(0);
+	                }
+
+	                byte[] averageRatingBytes = result.getValue(DETAIL_CF, Bytes.toBytes("average_rating"));
+	                if (averageRatingBytes != null && averageRatingBytes.length >= Bytes.SIZEOF_FLOAT) {
+	                    bookModel.setAverage_rating(Bytes.toFloat(averageRatingBytes));
+	                } else {
+	                    bookModel.setAverage_rating(0.0f);
+	                }
+
+	                byte[] ratingsCountBytes = result.getValue(DETAIL_CF, Bytes.toBytes("ratings_count"));
+	                if (ratingsCountBytes != null && ratingsCountBytes.length >= Bytes.SIZEOF_INT) {
+	                    bookModel.setRatings_count(Bytes.toInt(ratingsCountBytes));
+	                } else {
+	                    bookModel.setRatings_count(0);
+	                }
+
+	                listBook.add(bookModel);
+	            }
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+
+	    return listBook;
+	}
+
         
 	}
 

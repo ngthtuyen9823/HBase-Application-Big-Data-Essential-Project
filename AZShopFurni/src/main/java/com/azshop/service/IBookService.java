@@ -31,4 +31,6 @@ List<Object> findTop() throws IOException;
 	List<String> findTopAuthor() throws IOException;
 	
 	List<Object> findToReport() throws IOException;
+
+	List<BookModel> findSameCategory(String categories);
 }

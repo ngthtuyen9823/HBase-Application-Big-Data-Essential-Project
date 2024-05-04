@@ -28,4 +28,6 @@ public interface IBookDAO {
 	
 
 	List<String> findAuthor() throws IOException;
+
+	List<BookModel> findSameCategory(String categories);
 }
