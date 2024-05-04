@@ -637,26 +637,6 @@ public class BookDAOImpl implements IBookDAO {
 
 		  return listBook;
 	}
-	
-	@Override
-	public List<String> findAuthor() throws IOException {
-		Configuration conf = new Configuration();
-		Connection connection = ConnectionFactory.createConnection(conf);
-		Table table = connection.getTable(TableName.valueOf("books"));
-		List<String> listAuthor = new ArrayList<>();
-		try {
-			Scan scan = new Scan();
-			scan.addFamily(INFO_CF);
-			ResultScanner scanner = table.getScanner(scan);
-			for (Result result : scanner) {
-				listAuthor.add(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("authors"))));
-			}
-		} finally {
-			table.close();
-			connection.close();
-		}
-		return listAuthor;
-	}
 
 	public static void main(String[] args) throws IOException {
 //		String name = "Gilead";

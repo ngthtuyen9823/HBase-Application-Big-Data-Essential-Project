@@ -136,30 +136,39 @@ public class BookServiceImpl implements IBookService {
 				.collect(Collectors.groupingBy(BookModel::getPublished_year, Collectors.summingLong(BookModel::getRatings_count)))
 				.entrySet().stream()
 				.sorted(Map.Entry.<Integer, Long>comparingByKey())
-		 		.collect(Collectors.toList());	
-
-		List<Entry<Integer, Long>> countRatingPubYear = listBook
+		 		.collect(Collectors.toList());
+		
+		int one = 1;
+		listBook
+		.stream()
+		.forEach(e -> e.setAverage_rating(e.getAverage_rating() / one));
+		
+		List<Entry<Float, Long>> avgRatingPubYear = listBook
 				.stream()
-				.collect(Collectors.groupingBy(BookModel::getPublished_year, Collectors.summingLong(BookModel::getRatings_count)))
+				.collect(Collectors.groupingBy(BookModel::getAverage_rating, Collectors.summingLong(BookModel::getRatings_count)))
 				.entrySet().stream()
-				.sorted(Map.Entry.<Integer, Long>comparingByKey())
-		 		.collect(Collectors.toList());	
-
-		List<Entry<String, Long>> topCountCate = listBook
-				.stream()
-				.collect(Collectors.groupingBy(BookModel::getCategories, Collectors.counting()))
-				.entrySet().stream()
-				.sorted(Map.Entry.<String, Long>comparingByKey()
-				.limit(5)
-				.reversed())
-		 		.collect(Collectors.toList());	
+				.sorted(Map.Entry.<Float, Long>comparingByKey())
+		 		.collect(Collectors.toList());
+		
+//		int sumcount = listBook
+//				.stream()
+//				.collect(Collectors.summingInt(BookModel::getRatings_count));
+//
+//		
+//			
+//		List<Entry<Integer, Double>> avgRatingPubYear = listBook
+//				.stream()
+//				.collect(Collectors.groupingBy(BookModel::getPublished_year, Collectors.summingDouble(BookModel::getAverage_rating)))
+//				.entrySet().stream()
+//				.sorted(Map.Entry.<Integer, Double>comparingByKey())
+//		 		.collect(Collectors.toList());
 		
 		List<Object> list = new ArrayList<Object>();
 		
 		
 		list.add(countPubYear);
 		list.add(countRatingPubYear);
-		list.add(topCountCate);
+		list.add(avgRatingPubYear);
 		
 		return list;
 	}
@@ -169,7 +178,7 @@ public class BookServiceImpl implements IBookService {
 		try {
 		IBookService bookService = new BookServiceImpl();
 			List<Object> list =  bookService.findToReport();
-			List<Entry<Integer, Long>> countPubYear = (List<Entry<Integer, Long>>)list.get(2);
+			List<Entry<Float, Long>> countPubYear = (List<Entry<Float, Long>>)list.get(2);
 			
 			
 			countPubYear.forEach(b -> System.out.println(b.getKey() +" "+b.getValue()));
