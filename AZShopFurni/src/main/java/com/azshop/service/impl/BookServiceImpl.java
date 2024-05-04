@@ -171,4 +171,10 @@ public class BookServiceImpl implements IBookService {
 		// TODO Auto-generated method stub
 		return bookDAO.findSameCategory(categories);
 	}
+
+	@Override
+	public List<String> findAllCategories() {
+		// TODO Auto-generated method stub
+		return bookDAO.findAllCategories();
+	}
 }

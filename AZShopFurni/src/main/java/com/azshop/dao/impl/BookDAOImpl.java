@@ -2,7 +2,9 @@ package com.azshop.dao.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.Cell;
@@ -233,95 +235,70 @@ public class BookDAOImpl implements IBookDAO {
 
 
 	@Override
-	public List<BookModel> findByCategory(String cate) throws IOException  {
-		String tableName = "books";
-        String columnFamily = "info";
-        String columnName = "categories";
-		List<BookModel> listBook = new ArrayList<>();
+	public List<BookModel> findByCategory(String cate) throws IOException {
+	    String tableName = "books";
+	    String columnFamily = "info";
+	    String columnName = "categories";
+	    List<BookModel> listBook = new ArrayList<>();
 
-        Configuration conf = new Configuration();
-        try (Connection connection = ConnectionFactory.createConnection(conf);
-             Table table = connection.getTable(TableName.valueOf(tableName))) {
-            Scan scan = new Scan();
-            scan.setLimit(20);
-            if(cate.equals("Fiction")) {
-            	System.out.println("cate1");
-            SingleColumnValueFilter filter = new SingleColumnValueFilter(
-                Bytes.toBytes(columnFamily),
-                Bytes.toBytes(columnName),
-                CompareOperator.EQUAL,
-                new BinaryComparator(
-                		"Fiction".getBytes())
-                
-            );
-            scan.setFilter(filter);
-            } else {
-            	System.out.println("cate2");
+	    Configuration conf = new Configuration();
+	    try (Connection connection = ConnectionFactory.createConnection(conf);
+	         Table table = connection.getTable(TableName.valueOf(tableName))) {
+	        Scan scan = new Scan();
+	        scan.setLimit(20);
 
-            	SingleColumnValueFilter filter = new SingleColumnValueFilter(
-                        Bytes.toBytes(columnFamily),
-                        Bytes.toBytes(columnName),
-                        CompareOperator.NOT_EQUAL,
-                        new BinaryComparator(
-                        		"Fiction".getBytes()));
-            	scan.setFilter(filter);
-            }
-            
+	        SingleColumnValueFilter filter = new SingleColumnValueFilter(
+	                Bytes.toBytes(columnFamily),
+	                Bytes.toBytes(columnName),
+	                CompareOperator.EQUAL,
+	                new BinaryComparator(cate.getBytes())
+	        );
+	        scan.setFilter(filter);
 
-		    try (ResultScanner scanner = table.getScanner(scan)) {
-		      for (Result result : scanner) {
-		    	  BookModel bookModel = new BookModel();
-					bookModel.setIsbn13(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn13"))));
-					bookModel.setIsbn10(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn10"))));
-					bookModel.setTitle(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("title"))));
-					bookModel.setAuthors(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("authors"))));
-					bookModel.setCategories(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("categories"))));
-					bookModel.setThumbnail(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("thumbnail"))));
-					bookModel.setDescription(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("description"))));
+	        try (ResultScanner scanner = table.getScanner(scan)) {
+	            for (Result result : scanner) {
+	                BookModel bookModel = new BookModel();
+	                bookModel.setIsbn13(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn13"))));
+	                bookModel.setIsbn10(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn10"))));
+	                bookModel.setTitle(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("title"))));
+	                bookModel.setAuthors(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("authors"))));
+	                bookModel.setCategories(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("categories"))));
+	                bookModel.setThumbnail(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("thumbnail"))));
+	                bookModel.setDescription(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("description"))));
 
-					byte[] publishedYearBytes = result.getValue(DETAIL_CF, Bytes.toBytes("published_year"));
-					if (publishedYearBytes != null && publishedYearBytes.length >= Bytes.SIZEOF_INT) {
-						bookModel.setPublished_year(Bytes.toInt(publishedYearBytes));
-					} else {
-						// Handle null value or insufficient byte array length
-						bookModel.setPublished_year(0); // Set a default value or log a message
-					}
+	                byte[] publishedYearBytes = result.getValue(DETAIL_CF, Bytes.toBytes("published_year"));
+	                if (publishedYearBytes != null && publishedYearBytes.length >= Bytes.SIZEOF_INT) {
+	                    bookModel.setPublished_year(Bytes.toInt(publishedYearBytes));
+	                } else {
+	                    bookModel.setPublished_year(0);
+	                }
 
-					byte[] averageRatingBytes = result.getValue(DETAIL_CF, Bytes.toBytes("average_rating"));
-					if (averageRatingBytes != null && averageRatingBytes.length >= Bytes.SIZEOF_FLOAT) {
-						bookModel.setAverage_rating(Bytes.toFloat(averageRatingBytes));
-					} else {
-						// Handle null value or insufficient byte array length
-						bookModel.setAverage_rating(0.0f); // Set a default value or log a message
-					}
-	//
-//					byte[] numPagesBytes = result.getValue(DETAIL_CF, Bytes.toBytes("numbers"));
-//					if (numPagesBytes != null && numPagesBytes.length >= Bytes.SIZEOF_INT) {
-//						bookModel.setNumbers(Bytes.toInt(numPagesBytes));;
-//					} else {
-//						// Handle null value or insufficient byte array length
-//						bookModel.setNumbers(0); // Set a default value or log a message
-//					}
+	                byte[] averageRatingBytes = result.getValue(DETAIL_CF, Bytes.toBytes("average_rating"));
+	                if (averageRatingBytes != null && averageRatingBytes.length >= Bytes.SIZEOF_FLOAT) {
+	                    bookModel.setAverage_rating(Bytes.toFloat(averageRatingBytes));
+	                } else {
+	                    bookModel.setAverage_rating(0.0f);
+	                }
 
-					byte[] ratingsCountBytes = result.getValue(DETAIL_CF, Bytes.toBytes("ratings_count"));
-					if (ratingsCountBytes != null && ratingsCountBytes.length >= Bytes.SIZEOF_INT) {
-						bookModel.setRatings_count(Bytes.toInt(ratingsCountBytes));
-					} else {
-						// Handle null value or insufficient byte array length
-						bookModel.setRatings_count(0); // Set a default value or log a message
-					}
+	                byte[] ratingsCountBytes = result.getValue(DETAIL_CF, Bytes.toBytes("ratings_count"));
+	                if (ratingsCountBytes != null && ratingsCountBytes.length >= Bytes.SIZEOF_INT) {
+	                    bookModel.setRatings_count(Bytes.toInt(ratingsCountBytes));
+	                } else {
+	                    bookModel.setRatings_count(0);
+	                }
 
-					// Print or use the bookModel object
-					listBook.add(bookModel);
-		      }
-		    }
-		  } catch (IOException e) {
-		    e.printStackTrace();
-		  }
+	                // Add bookModel to the list
+	                listBook.add(bookModel);
+	            }
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
 
-		  return listBook;
-
+	    return listBook;
 	}
+
+
 
 
 	@Override
@@ -811,6 +788,39 @@ public class BookDAOImpl implements IBookDAO {
 
 	    return listBook;
 	}
+
+	@Override
+	public List<String> findAllCategories() {
+	    String tableName = "books";
+	    String columnFamily = "info";
+	    String columnName = "categories";
+	    Set<String> categorySet = new HashSet<>(); // Using a set to ensure uniqueness
+
+	    Configuration conf = new Configuration();
+	    try (Connection connection = ConnectionFactory.createConnection(conf);
+	         Table table = connection.getTable(TableName.valueOf(tableName))) {
+	        Scan scan = new Scan();
+	        try (ResultScanner scanner = table.getScanner(scan)) {
+	            for (Result result : scanner) {
+	                byte[] categoryBytes = result.getValue(Bytes.toBytes(columnFamily), Bytes.toBytes(columnName));
+	                if (categoryBytes != null) {
+	                    String category = Bytes.toString(categoryBytes);
+	                    categorySet.add(category);
+	                }
+	            }
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+
+	    // Convert set to list and select only 20 categories
+	    List<String> categoriesList = new ArrayList<>(categorySet);
+	    if (categoriesList.size() > 50) {
+	        categoriesList = categoriesList.subList(0, 50);
+	    }
+	    return categoriesList;
+	}
+
 
         
 	}

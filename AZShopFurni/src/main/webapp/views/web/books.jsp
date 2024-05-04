@@ -56,8 +56,8 @@
 </form>
 				<!-- Filter -->
 				<div class="dis-none panel-filter w-full p-t-10">
-  <div class="wrap-filter flex-w bg6 w-full p-lr-40 p-t-27 p-lr-15-sm">
-    <div class="filter-col2 p-r-15 p-b-27">
+  
+   
       <div class="mtext-102 cl2 p-b-15">Đánh giá</div>
       <ul>
         <li class="p-b-6">
@@ -101,31 +101,26 @@
           </form>
         </li>
       </ul>
-            <div class="mtext-102 cl2 p-b-15">Phân loại</div>
-      <ul>
-        
-        
-        
-        <li class="p-b-6">
-          <form action="/AZShopFurni/filter" method="get">
-            <input type="hidden" >
-            <button type="submit" class="filter-link stext-106 trans-04"name="Cate" value="Fiction" >
-              Fiction
-            </button>
-          </form>
+<div class="mtext-102 cl2 p-b-15">Phân loại</div>
+<ul style="list-style-type: none; padding: 0; margin: 0;">
+    <c:forEach var="category" items="${listCate}">
+        <li class="p-b-6" style="display: inline-block; margin-right: 10px;">
+            <form action="/AZShopFurni/filter" method="get" style="margin: 0;">
+                <input type="hidden" name="Cate" value="${category}">
+                <button type="submit" class="filter-link stext-106 trans-04" style="padding: 5px 10px;">
+                    ${category}
+                </button>
+            </form>
         </li>
-        <li class="p-b-6">
-          <form action="/AZShopFurni/filter" method="get">
-            <input type="hidden" >
-            <button type="submit" class="filter-link stext-106 trans-04" name="Cate" value="nonFiction">
-			Non-Fiction            
-</button>
-          </form>
+    </c:forEach>
+</ul>
+
+
         </li>
       </ul>
     </div>
-  </div>
-</div>
+
+
 			<!-- List Products -->
 			<div class="row isotope-grid">
 				<c:if test="${books.size() > 0}">
