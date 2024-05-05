@@ -39,9 +39,9 @@ public class InitData {
 
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    String[] values = line.split(","); 
+                	String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
                     if (values.length < 11) {
-//                        System.err.println("Invalid data format. Skipping line: " + line);
+                        System.err.println("Invalid data format. Skipping line: " + line);
                         continue;
                     }
 

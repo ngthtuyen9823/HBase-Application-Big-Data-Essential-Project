@@ -30,94 +30,97 @@
 						<i
 							class="icon-close-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
 						Tìm kiếm
+						
 					</div>
+					
+
+
 				</div>
 				<!-- Search product -->
-				<form class="dis-none panel-search w-full p-t-10 p-b-15" action="#"
-					method="get">
-					<div class="dis-none panel-search w-full p-t-10 p-b-15">
-						<div class="bor8 dis-flex p-l-15">
-							<button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04 ">
-								<i class="zmdi zmdi-search"></i>
-							</button>
-							<datalist id="listHistory">
-								<%-- <c:forEach var="i" items="${history}">
-									<option value="${i.history}">
-								</c:forEach> --%>
-							</datalist>
-							<%-- 	<input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text"
-								list="listHistory" name="keyword"
-								placeholder="<c:if test="{keyword==null}">Tìm kiếm</c:if>${keyword}"> --%>
-						</div>
-					</div>
-				</form>
+				<form class="dis-none panel-search w-full p-t-10 p-b-15" action="/AZShopFurni/search" method="get">
+  <div class="bor8 dis-flex p-l-15">
+    <button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04 ">
+      <i class="zmdi zmdi-search"></i>
+    </button>
+    <input class="form-control" type="text" name="keySearch" placeholder="Tìm kiếm theo tên sách... " />
+  </div>
+</form>
+
+<form class="dis-none panel-search w-full p-t-10 p-b-15" action="/AZShopFurni/search" method="get">
+  <div class="bor8 dis-flex p-l-15">
+    <button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04 ">
+      <i class="zmdi zmdi-search"></i>
+    </button>
+    <input class="form-control" type="text" name="authorsKey" placeholder="Tìm kiếm theo tên tác giả..." />
+  </div>
+</form>
 				<!-- Filter -->
 				<div class="dis-none panel-filter w-full p-t-10">
-					<div
-						class="wrap-filter flex-w bg6 w-full p-lr-40 p-t-27 p-lr-15-sm">
-						<div class="filter-col2 p-r-15 p-b-27">
-							<div class="mtext-102 cl2 p-b-15">Đánh giá</div>
-							<ul>
-								<li class="p-b-6">
-									<button onclick="changeRating('5')"
-										class="filter-link stext-106 trans-04 ${rating == '5' ? 'filter-link-active' : ''}">
-										<i class="fas fa-star" style="color: gold;"></i><i
-											class="fas fa-star" style="color: gold;"></i><i
-											class="fas fa-star" style="color: gold;"></i><i
-											class="fas fa-star" style="color: gold;"></i><i
-											class="fas fa-star" style="color: gold;"></i>
-									</button>
-								</li>
-								<li class="p-b-6">
-									<button onclick="changeRating('4')"
-										class="filter-link stext-106 trans-04 ${rating == '4' ? 'filter-link-active' : ''}">
-										<i class="fas fa-star" style="color: gold;"></i><i
-											class="fas fa-star" style="color: gold;"></i><i
-											class="fas fa-star" style="color: gold;"></i><i
-											class="fas fa-star" style="color: gold;"></i><i
-											class="fa fa-star"></i> trở lên
-									</button>
-								</li>
-								<li class="p-b-6">
-									<button onclick="changeRating('3')"
-										class="filter-link stext-106 trans-04 ${rating == '3' ? 'filter-link-active' : ''}">
-										<i class="fas fa-star" style="color: gold;"></i><i
-											class="fas fa-star" style="color: gold;"></i><i
-											class="fas fa-star" style="color: gold;"></i><i
-											class="fa fa-star"></i><i class="fa fa-star"></i> trở lên
-									</button>
-								</li>
-								<li class="p-b-6">
-									<button onclick="changeRating('2')"
-										class="filter-link stext-106 trans-04 ${rating == '2' ? 'filter-link-active' : ''}">
-										<i class="fas fa-star" style="color: gold;"></i><i
-											class="fas fa-star" style="color: gold;"></i><i
-											class="fa fa-star"></i><i class="fa fa-star"></i><i
-											class="fa fa-star"></i> trở lên
-									</button>
-								</li>
-								<li class="p-b-6">
-									<button onclick="changeRating('1')"
-										class="filter-link stext-106 trans-04 ${rating == '1' ? 'filter-link-active' : ''}">
-										<i class="fas fa-star" style="color: gold;"></i><i
-											class="fa fa-star"></i><i class="fa fa-star"></i><i
-											class="fa fa-star"></i><i class="fa fa-star"></i> trở lên
-									</button>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-			<c:if test="${books.size()== 0 && keyword!=null}">
-				<div
-					style="display: flex; justify-content: center; align-items: center;">
+  
+   
+      <div class="mtext-102 cl2 p-b-15">Đánh giá</div>
+      <ul>
+        <li class="p-b-6">
+          <form action="/AZShopFurni/filter" method="get">
+           <input type="hidden">
+            <button type="submit" class="filter-link stext-106 trans-04" name="avgRating" value="5">            
+              <i class="fas fa-star" style="color: gold;"></i><i class="fas fa-star" style="color: gold;"></i><i class="fas fa-star" style="color: gold;"></i><i class="fas fa-star" style="color: gold;"></i><i class="fas fa-star" style="color: gold;"></i>
+            </button>
+          </form>
+        </li>
+        <li class="p-b-6">
+          <form action="/AZShopFurni/filter" method="get">
+            <input type="hidden" >
+            <button type="submit" class="filter-link stext-106 trans-04" name="avgRating" value="4">
+              <i class="fas fa-star" style="color: gold;"></i><i class="fas fa-star" style="color: gold;"></i><i class="fas fa-star" style="color: gold;"></i><i class="fas fa-star" style="color: gold;"></i><i class="fa fa-star"></i> trở lên
+            </button>
+          </form>
+        </li>
+        <li class="p-b-6">
+          <form action="/AZShopFurni/filter" method="get">
+            <input type="hidden" >
+            <button type="submit" class="filter-link stext-106 trans-04" name="avgRating" value="3">
+              <i class="fas fa-star" style="color: gold;"></i><i class="fas fa-star" style="color: gold;"></i><i class="fas fa-star" style="color: gold;"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> trở lên
+            </button>
+          </form>
+        </li>
+        <li class="p-b-6">
+          <form action="/AZShopFurni/filter" method="get">
+            <input type="hidden" >
+            <button type="submit" class="filter-link stext-106 trans-04"name="avgRating" value="2" >
+              <i class="fas fa-star" style="color: gold;"></i><i class="fas fa-star" style="color: gold;"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> trở lên
+            </button>
+          </form>
+        </li>
+        <li class="p-b-6">
+          <form action="/AZShopFurni/filter" method="get">
+            <input type="hidden" >
+            <button type="submit" class="filter-link stext-106 trans-04" name="avgRating" value="1">
+              <i class="fas fa-star" style="color: gold;"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> trở lên
+            </button>
+          </form>
+        </li>
+      </ul>
+<div class="mtext-102 cl2 p-b-15">Phân loại</div>
+<ul style="list-style-type: none; padding: 0; margin: 0;">
+    <c:forEach var="category" items="${listCate}">
+        <li class="p-b-6" style="display: inline-block; margin-right: 10px;">
+            <form action="/AZShopFurni/filter" method="get" style="margin: 0;">
+                <input type="hidden" name="Cate" value="${category}">
+                <button type="submit" class="filter-link stext-106 trans-04" style="padding: 5px 10px;">
+                    ${category}
+                </button>
+            </form>
+        </li>
+    </c:forEach>
+</ul>
 
-					<img alt="img"
-						src="https://storage.googleapis.com/web-budget/Image/Other/a60759ad1dabe909c46a817ecbf71878.png">
-					<div>Không tìm thấy sản phẩm nào phù hợp</div>
-				</div>
-			</c:if>
+
+        </li>
+      </ul>
+    </div>
+
+
 			<!-- List Products -->
 			<div class="row isotope-grid">
 				<c:if test="${books.size() > 0}">
@@ -142,15 +145,6 @@
 							</div>
 						</div>
 					</c:forEach>
-
-					<!-- Pagination -->
-					<%-- 					<div class="flex-c-m flex-w w-full p-t-38">
-						<!-- Generate pagination links dynamically based on the totalPage -->
-						<c:forEach begin="1" end="${totalPage}" varStatus="loop">
-							<button onclick="changePage('${loop.index}')"
-								class="flex-c-m how-pagination1 trans-04 m-all-7 ${page == loop.index ? 'active-pagination1' : ''}">${loop.index}</button>
-						</c:forEach>
-					</div> --%>
 				</c:if>
 			</div>
 		</div>

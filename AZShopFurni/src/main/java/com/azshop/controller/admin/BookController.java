@@ -101,7 +101,7 @@ public class BookController extends HttpServlet {
 			book.setThumbnail(thumbnail);
 			book.setPublished_year(published_year);
 			book.setAverage_rating(average_rating);
-			book.setNumbers(num_pages);
+//			book.setNumbers(num_pages);
 			book.setRatings_count(ratings_count);
 			bookService.update(book);
 
@@ -137,7 +137,7 @@ public class BookController extends HttpServlet {
 			book.setThumbnail(thumbnail);
 			book.setPublished_year(published_year);
 			book.setAverage_rating(average_rating);
-			book.setNumbers(num_pages);
+//			book.setNumbers(num_pages);
 			book.setRatings_count(ratings_count);
 			
 			bookService.insert(book);

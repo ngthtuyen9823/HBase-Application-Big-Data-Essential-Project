@@ -4,17 +4,18 @@ import java.io.IOException;
 import java.util.List;
 
 import com.azshop.models.BookModel;
-
+import java.util.Map;
+import java.util.Map.Entry;
 public interface IBookService {
 	List<BookModel> findAll();
 
 	BookModel findOne(String id) throws IOException;
 
-	List<BookModel> findByName(String key);
+	List<BookModel> findByName(String key) throws IOException;
 
-	List<BookModel> findByCategory(int cateId);
+	List<BookModel> findByCategory(String cate) throws IOException;
 
-	List<BookModel> findByAuthor(String key);
+	List<BookModel> findByAuthor(String key) throws IOException;
 
 	List<BookModel> findWithCount(int count);
 
@@ -24,5 +25,14 @@ public interface IBookService {
 
 	void update(BookModel model);
 
-	List<BookModel> filterByRating(int rate);
+	List<BookModel> filterByRating(int rate)  throws IOException;
+List<Object> findTop() throws IOException;
+	
+	List<String> findTopAuthor() throws IOException;
+	
+	List<Object> findToReport() throws IOException;
+
+	List<BookModel> findSameCategory(String categories);
+
+	List<String> findAllCategories();
 }

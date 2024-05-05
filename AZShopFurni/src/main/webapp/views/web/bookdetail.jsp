@@ -55,7 +55,7 @@
 						<dt class="col-3">Thể loại</dt>
 						<dd class="col-9">${book.categories}</dd>
 						<dt class="col-3">Kho</dt>
-						<dd class="col-9">${book.numbers}</dd>
+						<dd class="col-9">${book.num_pages}</dd>
 
 					</div>
 					<div class="row"></div>
@@ -102,8 +102,8 @@
 		</div>
 	</div>
 </section>
-<%-- <section class="product">
-	<h2 class="product-category">sản phẩm cùng loại</h2>
+<section class="product">
+	<h2 class="product-category">Sách cùng thể loại</h2>
 	<button class="pre-btn">
 		<img src="images/arrow.png" alt="">
 	</button>
@@ -111,31 +111,18 @@
 		<img src="images/arrow.png" alt="">
 	</button>
 	<div class="product-container">
-		<c:forEach items="${cateProList}" var="item" varStatus="loop">
+		<c:forEach items="${listBookCate}" var="item" varStatus="loop">
 			<div class="product-card">
 				<div class="product-image">
-					<a href="<c:url value='/products?id=${item.productID}' />"
-						class="product-image"><img src="${item.displayedImage}"
+					<a href="<c:url value='/products?id=${item.isbn10}' />"
+						class="product-image"><img src="${item.thumbnail}"
 						class="product-thumb" alt=""> </a>
 				</div>
 				<div class="product-info">
-					<h2 class="product-brand">${item.productName}</h2>
-					<p class="product-short-description">${item.description}</p>
-					<c:if test="${item.displayedPromotionPrice ne 0}">
-						<span class="price"><fmt:formatNumber type="currency"
-								value="${item.displayedPromotionPrice}" currencyCode="VND"
-								pattern="#,##0 VND" var="formattedPrice" />${formattedPrice}</span>
-						<span class="actual-price"><fmt:formatNumber
-								type="currency" value="${item.displayedOriginalPrice}"
-								currencyCode="VND" pattern="#,##0 VND" var="formattedPrice" />${formattedPrice}</span>
-					</c:if>
-					<c:if test="${item.displayedPromotionPrice eq 0}">
-						<span class="price"><fmt:formatNumber type="currency"
-								value="${item.displayedOriginalPrice}" currencyCode="VND"
-								pattern="#,##0 VND" var="formattedPrice" />${formattedPrice}</span>
-					</c:if>
+					<h2 class="product-brand">${item.title}</h2>
+					<p class="product-short-description">${item.description}</p>				
 				</div>
 			</div>
 		</c:forEach>
 	</div>
-</section> --%>
+</section> 
