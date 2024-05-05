@@ -4,7 +4,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.CompareOperator;
@@ -550,33 +554,55 @@ public class BookDAOImpl implements IBookDAO {
 	}
 
 	@Override
-	public List<String> findAllCategories() {
+	public List<List<Entry<String,Long>>> findToFilter() {
 		String tableName = "books";
 		String columnFamily = "info";
-		String columnName = "categories";
-		Set<String> categorySet = new HashSet<>();
+		String columnName1 = "categories";
+		String columnName2 = "authors";
+		List<String> categoriesList = new ArrayList<String>();
+		List<String> authorsList = new ArrayList<String>();
 		Configuration conf = new Configuration();
 		try (Connection connection = ConnectionFactory.createConnection(conf);
 				Table table = connection.getTable(TableName.valueOf(tableName))) {
 			Scan scan = new Scan();
 			try (ResultScanner scanner = table.getScanner(scan)) {
 				for (Result result : scanner) {
-					byte[] categoryBytes = result.getValue(Bytes.toBytes(columnFamily), Bytes.toBytes(columnName));
+					byte[] categoryBytes = result.getValue(Bytes.toBytes(columnFamily), Bytes.toBytes(columnName1));
 					if (categoryBytes != null) {
 						String category = Bytes.toString(categoryBytes);
-						categorySet.add(category);
+						categoriesList.add(category);
+					}
+					byte[] authorsBytes = result.getValue(Bytes.toBytes(columnFamily), Bytes.toBytes(columnName2));
+					if (authorsBytes != null) {
+						String authors = Bytes.toString(authorsBytes);
+						authorsList.add(authors);
 					}
 				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		List<String> categoriesList = new ArrayList<>(categorySet);
-		if (categoriesList.size() > 50) {
-			categoriesList = categoriesList.subList(0, 50);
+		List<List<Entry<String,Long>>> listFilter = new ArrayList<List<Entry<String,Long>>>();
+		listFilter.add(categoriesList
+				.stream()
+				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+				.entrySet()
+				.stream()
+				.sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+				.limit(5)
+				.collect(Collectors.toList()));
+		
+		listFilter.add(authorsList
+				.stream()
+				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+				.entrySet()
+				.stream()
+				.sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+				.limit(5)
+				.collect(Collectors.toList()));
+		
+		 return listFilter;
 		}
-		return categoriesList;
-	}
 	
 	private BookModel constructBookFromResult(Result result) {
 		BookModel book = new BookModel();

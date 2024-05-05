@@ -2,6 +2,7 @@ package com.azshop.dao;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map.Entry;
 
 import com.azshop.models.BookModel;
 
@@ -31,5 +32,5 @@ public interface IBookDAO {
 
 	List<BookModel> findSameCategory(String categories);
 
-	List<String> findAllCategories();
+	List<List<Entry<String, Long>>> findToFilter();
 }

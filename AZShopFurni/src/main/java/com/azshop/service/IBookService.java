@@ -36,5 +36,5 @@ List<Object> findTop() throws IOException;
 
 	List<BookModel> findSameCategory(String categories);
 
-	List<String> findAllCategories();
+	List<List<Entry<String, Long>>> findToFilter();
 }

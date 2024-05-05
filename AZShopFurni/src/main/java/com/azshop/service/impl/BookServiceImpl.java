@@ -162,13 +162,11 @@ public class BookServiceImpl implements IBookService {
 
 	@Override
 	public List<BookModel> findSameCategory(String categories) {
-		// TODO Auto-generated method stub
 		return bookDAO.findSameCategory(categories);
 	}
 	@Override
 
-	public List<String> findAllCategories() {
-		return bookDAO.findAllCategories();
-		// TODO Auto-generated method stub
+	public List<List<Entry<String,Long>>> findToFilter() {
+		return bookDAO.findToFilter();
 	}
 }

@@ -2,6 +2,7 @@ package com.azshop.controller.web;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map.Entry;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -27,14 +28,15 @@ public class BookController extends HttpServlet {
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");
 		req.setCharacterEncoding("UTF-8");
-		List<String> listCategories = bookService.findAllCategories();
-		System.out.println(listCategories);
+		List<Entry<String,Long>> listCategories = bookService.findToFilter().get(0);
+		List<Entry<String,Long>> listAuthors = bookService.findToFilter().get(1);
 
 		if (req.getRequestURI().contains("/books")) {
 			List<BookModel> listBook = bookService.findWithCount(20);
 
 			req.setAttribute("books", listBook);
 			req.setAttribute("listCate", listCategories);
+			req.setAttribute("listAuthors", listAuthors);
 
 			String id = req.getParameter("id");
 			if (id != null) {
@@ -67,7 +69,7 @@ public class BookController extends HttpServlet {
 
 				List<BookModel> listBook = bookService.findByAuthor(key);
 				req.setAttribute("listCate", listCategories);
-
+				req.setAttribute("listAuthors", listAuthors);
 				req.setAttribute("books", listBook);
 				req.getRequestDispatcher("/views/web/books.jsp").forward(req, resp);
 				return;
@@ -83,17 +85,29 @@ public class BookController extends HttpServlet {
 
 				req.setAttribute("books", listBook);
 				req.setAttribute("listCate", listCategories);
+				req.setAttribute("listAuthors", listAuthors);
 				req.getRequestDispatcher("/views/web/books.jsp").forward(req, resp);
 				return;
 			}
 
 			if (req.getParameter("Cate") != null) {
 				String key = req.getParameter("Cate");
-				System.out.println(key);
 				List<BookModel> listBook = bookService.findByCategory(key);
 
 				req.setAttribute("books", listBook);
 				req.setAttribute("listCate", listCategories);
+				req.setAttribute("listAuthors", listAuthors);
+				req.getRequestDispatcher("/views/web/books.jsp").forward(req, resp);
+				return;
+			}
+			
+			if (req.getParameter("Author") != null) {
+				String key = req.getParameter("Author");
+				List<BookModel> listBook = bookService.findByAuthor(key);
+
+				req.setAttribute("books", listBook);
+				req.setAttribute("listCate", listCategories);
+				req.setAttribute("listAuthors", listAuthors);
 				req.getRequestDispatcher("/views/web/books.jsp").forward(req, resp);
 				return;
 			}
