@@ -223,6 +223,8 @@ public class BookDAOImpl implements IBookDAO {
 						Bytes.toBytes(model.getPublished_year()));
 				put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("average_rating"),
 						Bytes.toBytes(model.getAverage_rating()));
+				put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("numbers"),
+						Bytes.toBytes(model.getNum_pages()));
 				put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("ratings_count"),
 						Bytes.toBytes(model.getRatings_count()));
 
@@ -241,11 +243,8 @@ public class BookDAOImpl implements IBookDAO {
 			Configuration conf = new Configuration();
 			Connection connection = ConnectionFactory.createConnection(conf);
 			Table table = connection.getTable(TableName.valueOf("books"));
-			List list = new ArrayList();
 			Delete delete = new Delete(id.getBytes());
-			list.add(delete);
-			table.delete(list);
-			System.out.println("delete row successful!");
+			table.delete(delete);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -273,6 +272,8 @@ public class BookDAOImpl implements IBookDAO {
 						Bytes.toBytes(model.getPublished_year()));
 				put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("average_rating"),
 						Bytes.toBytes(model.getAverage_rating()));
+				put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("numbers"),
+						Bytes.toBytes(model.getNum_pages()));
 				put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("ratings_count"),
 						Bytes.toBytes(model.getRatings_count()));
 

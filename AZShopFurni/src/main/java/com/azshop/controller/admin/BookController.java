@@ -56,6 +56,7 @@ public class BookController extends HttpServlet {
 	private void ListBook(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		List<BookModel> listBook = bookService.findAll();
 		req.setAttribute("books", listBook);
+		
 		req.getRequestDispatcher("/views/admin/books.jsp").forward(req, resp);
 
 	}
@@ -88,7 +89,7 @@ public class BookController extends HttpServlet {
 			String description = req.getParameter("description");
 			int published_year = Integer.parseInt(req.getParameter("published_year"));
 			float average_rating = Float.parseFloat(req.getParameter("average_rating"));
-			int num_pages = Integer.parseInt(req.getParameter("numbers"));
+			int num_pages = Integer.parseInt(req.getParameter("num_pages"));
 			int ratings_count = Integer.parseInt(req.getParameter("ratings_count"));
 
 			BookModel book = new BookModel();
@@ -135,11 +136,10 @@ public class BookController extends HttpServlet {
 			book.setThumbnail(thumbnail);
 			book.setPublished_year(published_year);
 			book.setAverage_rating(average_rating);
-//			book.setNumbers(num_pages);
+			book.setNum_pages(num_pages);
 			book.setRatings_count(ratings_count);
 
 			bookService.insert(book);
-
 //			MessageUtil.showMessage(req, "addSuccess");
 		} catch (Exception ex) {
 //			MessageUtil.showMessage(req, "addFail");

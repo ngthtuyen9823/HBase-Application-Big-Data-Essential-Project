@@ -59,7 +59,7 @@
 											<label>Average Rating</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="numbers" value ="${book.num_pages}"/> 
+											<input class="form-control" type="text" name="num_pages" value ="${book.num_pages}"/> 
 											<label>Num pages</label>
 										</div>
 										<div class="form-floating mb-3">
