@@ -13,7 +13,6 @@ import com.azshop.models.BookModel;
 import com.azshop.service.IBookService;
 import com.azshop.service.impl.BookServiceImpl;
 
-
 @WebServlet(urlPatterns = { "/home", "/contact" })
 public class HomeController extends HttpServlet {
 
@@ -29,8 +28,8 @@ public class HomeController extends HttpServlet {
 
 		if (req.getRequestURI().contains("/home")) {
 			List<Object> list = bookService.findTop();
-			List<BookModel> listTopRatingBook = (List<BookModel>)list.get(0);
-			List<BookModel> listTopRatingCountBook = (List<BookModel>)list.get(1);
+			List<BookModel> listTopRatingBook = (List<BookModel>) list.get(0);
+			List<BookModel> listTopRatingCountBook = (List<BookModel>) list.get(1);
 			List<String> listTopAuthor = bookService.findTopAuthor();
 			req.setAttribute("topratingbook", listTopRatingBook);
 			req.setAttribute("topratingcountbook", listTopRatingCountBook);

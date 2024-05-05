@@ -22,7 +22,7 @@ import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.client.Table;
-import org.apache.hadoop.hbase.filter.CompareFilter.CompareOp;
+
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.hbase.filter.*;
 
@@ -35,53 +35,30 @@ public class BookDAOImpl implements IBookDAO {
 
 	@Override
 	public List<BookModel> findAll() throws IOException {
+		List<BookModel> books = new ArrayList<>();
 		Configuration conf = new Configuration();
-		Connection connection = ConnectionFactory.createConnection(conf);
-		Table table = connection.getTable(TableName.valueOf("books"));
-		List<BookModel> listBook = new ArrayList<>();
-		try {
+
+		try (Connection connection = ConnectionFactory.createConnection(conf);
+				Table table = connection.getTable(TableName.valueOf("books"))) {
+
 			Scan scan = new Scan();
 			scan.addFamily(INFO_CF);
 			scan.addFamily(DETAIL_CF);
-			ResultScanner scanner = table.getScanner(scan);
-			for (Result result : scanner) {
-				// Process each row and create a BookModel
-				BookModel bookModel = new BookModel();
-				bookModel.setIsbn13(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn13"))));
-				bookModel.setIsbn10(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn10"))));
-				bookModel.setTitle(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("title"))));
-				bookModel.setAuthors(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("authors"))));
-				bookModel.setCategories(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("categories"))));
-				bookModel.setThumbnail(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("thumbnail"))));
-				bookModel.setDescription(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("description"))));
 
-				byte[] publishedYearBytes = result.getValue(DETAIL_CF, Bytes.toBytes("published_year"));
-				if (publishedYearBytes != null && publishedYearBytes.length >= Bytes.SIZEOF_INT) {
-					bookModel.setPublished_year(Bytes.toInt(publishedYearBytes));
-				} else {
-					bookModel.setPublished_year(0);
+			try (ResultScanner scanner = table.getScanner(scan)) {
+				for (Result result : scanner) {
+					BookModel book = constructBookFromResult(result);
+					books.add(book);
 				}
-
-				byte[] averageRatingBytes = result.getValue(DETAIL_CF, Bytes.toBytes("average_rating"));
-				if (averageRatingBytes != null && averageRatingBytes.length >= Bytes.SIZEOF_FLOAT) {
-					bookModel.setAverage_rating(Bytes.toFloat(averageRatingBytes));
-				} else {
-					bookModel.setAverage_rating(0.0f);
-				}
-				byte[] ratingsCountBytes = result.getValue(DETAIL_CF, Bytes.toBytes("ratings_count"));
-				if (ratingsCountBytes != null && ratingsCountBytes.length >= Bytes.SIZEOF_INT) {
-					bookModel.setRatings_count(Bytes.toInt(ratingsCountBytes));
-				} else {
-					bookModel.setRatings_count(0);
-				}
-
-				listBook.add(bookModel);
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-		} finally {
-			table.close();
-			connection.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		return listBook;
+
+		return books;
 	}
 
 	@Override
@@ -95,35 +72,7 @@ public class BookDAOImpl implements IBookDAO {
 		try {
 			Result result = table.get(get);
 			if (!result.isEmpty()) {
-				bookmodel = new BookModel();
-				bookmodel.setIsbn13(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn13"))));
-				bookmodel.setIsbn10(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn10"))));
-				bookmodel.setTitle(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("title"))));
-				bookmodel.setAuthors(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("authors"))));
-				bookmodel.setCategories(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("categories"))));
-				bookmodel.setThumbnail(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("thumbnail"))));
-				bookmodel.setDescription(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("description")))); // Family
-																													// -
-																													// qualifier
-				byte[] publishedYearBytes = result.getValue(DETAIL_CF, Bytes.toBytes("published_year"));
-				if (publishedYearBytes != null && publishedYearBytes.length >= Bytes.SIZEOF_INT) {
-					bookmodel.setPublished_year(Bytes.toInt(publishedYearBytes));
-				} else {
-					bookmodel.setPublished_year(0);
-				}
-
-				byte[] averageRatingBytes = result.getValue(DETAIL_CF, Bytes.toBytes("average_rating"));
-				if (averageRatingBytes != null && averageRatingBytes.length >= Bytes.SIZEOF_FLOAT) {
-					bookmodel.setAverage_rating(Bytes.toFloat(averageRatingBytes));
-				} else {
-					bookmodel.setAverage_rating(0.0f);
-				}
-				byte[] ratingsCountBytes = result.getValue(DETAIL_CF, Bytes.toBytes("ratings_count"));
-				if (ratingsCountBytes != null && ratingsCountBytes.length >= Bytes.SIZEOF_INT) {
-					bookmodel.setRatings_count(Bytes.toInt(ratingsCountBytes));
-				} else {
-					bookmodel.setRatings_count(0);
-				}
+				bookmodel = constructBookFromResult(result);
 			} else {
 				System.out.println("Empty");
 			}
@@ -138,7 +87,7 @@ public class BookDAOImpl implements IBookDAO {
 		String tableName = "books";
 		String columnFamily = "info";
 		String columnName = "title";
-		List<BookModel> listBook = new ArrayList<>();
+		List<BookModel> books = new ArrayList<>();
 
 		Configuration conf = new Configuration();
 		try (Connection connection = ConnectionFactory.createConnection(conf);
@@ -150,46 +99,17 @@ public class BookDAOImpl implements IBookDAO {
 
 			try (ResultScanner scanner = table.getScanner(scan)) {
 				for (Result result : scanner) {
-					BookModel bookModel = new BookModel();
-					bookModel.setIsbn13(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn13"))));
-					bookModel.setIsbn10(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn10"))));
-					bookModel.setTitle(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("title"))));
-					bookModel.setAuthors(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("authors"))));
-					bookModel.setCategories(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("categories"))));
-					bookModel.setThumbnail(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("thumbnail"))));
-					bookModel.setDescription(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("description"))));
-
-					byte[] publishedYearBytes = result.getValue(DETAIL_CF, Bytes.toBytes("published_year"));
-					if (publishedYearBytes != null && publishedYearBytes.length >= Bytes.SIZEOF_INT) {
-						bookModel.setPublished_year(Bytes.toInt(publishedYearBytes));
-					} else {
-						// Handle null value or insufficient byte array length
-						bookModel.setPublished_year(0); // Set a default value or log a message
-					}
-
-					byte[] averageRatingBytes = result.getValue(DETAIL_CF, Bytes.toBytes("average_rating"));
-					if (averageRatingBytes != null && averageRatingBytes.length >= Bytes.SIZEOF_FLOAT) {
-						bookModel.setAverage_rating(Bytes.toFloat(averageRatingBytes));
-					} else {
-						bookModel.setAverage_rating(0.0f);
-					}
-					byte[] ratingsCountBytes = result.getValue(DETAIL_CF, Bytes.toBytes("ratings_count"));
-					if (ratingsCountBytes != null && ratingsCountBytes.length >= Bytes.SIZEOF_INT) {
-						bookModel.setRatings_count(Bytes.toInt(ratingsCountBytes));
-					} else {
-						// Handle null value or insufficient byte array length
-						bookModel.setRatings_count(0); // Set a default value or log a message
-					}
-
-					// Print or use the bookModel object
-					listBook.add(bookModel);
+					BookModel book = constructBookFromResult(result);
+					books.add(book);
 				}
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		return listBook;
+		return books;
 	}
 
 	@Override
@@ -197,7 +117,7 @@ public class BookDAOImpl implements IBookDAO {
 		String tableName = "books";
 		String columnFamily = "info";
 		String columnName = "categories";
-		List<BookModel> listBook = new ArrayList<>();
+		List<BookModel> books = new ArrayList<>();
 
 		Configuration conf = new Configuration();
 		try (Connection connection = ConnectionFactory.createConnection(conf);
@@ -211,43 +131,17 @@ public class BookDAOImpl implements IBookDAO {
 
 			try (ResultScanner scanner = table.getScanner(scan)) {
 				for (Result result : scanner) {
-					BookModel bookModel = new BookModel();
-					bookModel.setIsbn13(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn13"))));
-					bookModel.setIsbn10(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn10"))));
-					bookModel.setTitle(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("title"))));
-					bookModel.setAuthors(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("authors"))));
-					bookModel.setCategories(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("categories"))));
-					bookModel.setThumbnail(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("thumbnail"))));
-					bookModel.setDescription(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("description"))));
-
-					byte[] publishedYearBytes = result.getValue(DETAIL_CF, Bytes.toBytes("published_year"));
-					if (publishedYearBytes != null && publishedYearBytes.length >= Bytes.SIZEOF_INT) {
-						bookModel.setPublished_year(Bytes.toInt(publishedYearBytes));
-					} else {
-						bookModel.setPublished_year(0);
-					}
-
-					byte[] averageRatingBytes = result.getValue(DETAIL_CF, Bytes.toBytes("average_rating"));
-					if (averageRatingBytes != null && averageRatingBytes.length >= Bytes.SIZEOF_FLOAT) {
-						bookModel.setAverage_rating(Bytes.toFloat(averageRatingBytes));
-					} else {
-						bookModel.setAverage_rating(0.0f);
-					}
-
-					byte[] ratingsCountBytes = result.getValue(DETAIL_CF, Bytes.toBytes("ratings_count"));
-					if (ratingsCountBytes != null && ratingsCountBytes.length >= Bytes.SIZEOF_INT) {
-						bookModel.setRatings_count(Bytes.toInt(ratingsCountBytes));
-					} else {
-						bookModel.setRatings_count(0);
-					}
-					listBook.add(bookModel);
+					BookModel book = constructBookFromResult(result);
+					books.add(book);
 				}
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		return listBook;
+		return books;
 	}
 
 	@Override
@@ -255,7 +149,7 @@ public class BookDAOImpl implements IBookDAO {
 		String tableName = "books";
 		String columnFamily = "info";
 		String columnName = "authors";
-		List<BookModel> listBook = new ArrayList<>();
+		List<BookModel> books = new ArrayList<>();
 
 		Configuration conf = new Configuration();
 		try (Connection connection = ConnectionFactory.createConnection(conf);
@@ -267,45 +161,17 @@ public class BookDAOImpl implements IBookDAO {
 
 			try (ResultScanner scanner = table.getScanner(scan)) {
 				for (Result result : scanner) {
-					BookModel bookModel = new BookModel();
-					bookModel.setIsbn13(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn13"))));
-					bookModel.setIsbn10(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn10"))));
-					bookModel.setTitle(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("title"))));
-					bookModel.setAuthors(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("authors"))));
-					bookModel.setCategories(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("categories"))));
-					bookModel.setThumbnail(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("thumbnail"))));
-					bookModel.setDescription(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("description"))));
-
-					byte[] publishedYearBytes = result.getValue(DETAIL_CF, Bytes.toBytes("published_year"));
-					if (publishedYearBytes != null && publishedYearBytes.length >= Bytes.SIZEOF_INT) {
-						bookModel.setPublished_year(Bytes.toInt(publishedYearBytes));
-					} else {
-						bookModel.setPublished_year(0);
-					}
-
-					byte[] averageRatingBytes = result.getValue(DETAIL_CF, Bytes.toBytes("average_rating"));
-					if (averageRatingBytes != null && averageRatingBytes.length >= Bytes.SIZEOF_FLOAT) {
-						bookModel.setAverage_rating(Bytes.toFloat(averageRatingBytes));
-					} else {
-					}
-
-					byte[] ratingsCountBytes = result.getValue(DETAIL_CF, Bytes.toBytes("ratings_count"));
-					if (ratingsCountBytes != null && ratingsCountBytes.length >= Bytes.SIZEOF_INT) {
-						bookModel.setRatings_count(Bytes.toInt(ratingsCountBytes));
-					} else {
-						// Handle null value or insufficient byte array length
-						bookModel.setRatings_count(0); // Set a default value or log a message
-					}
-
-					// Print or use the bookModel object
-					listBook.add(bookModel);
+					BookModel book = constructBookFromResult(result);
+					books.add(book);
 				}
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		return listBook;
+		return books;
 	}
 
 	public List<BookModel> findWithCount(int count) {
@@ -325,6 +191,8 @@ public class BookDAOImpl implements IBookDAO {
 					BookModel book = constructBookFromResult(result);
 					books.add(book);
 				}
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -333,7 +201,6 @@ public class BookDAOImpl implements IBookDAO {
 		return books;
 	}
 
-	
 	@Override
 	public void insert(BookModel model) {
 		try {
@@ -422,7 +289,9 @@ public class BookDAOImpl implements IBookDAO {
 		String tableName = "books";
 		String columnFamily = "detail";
 		String columnName = "average_rating";
-		List<BookModel> listBook = new ArrayList<>();
+		String rating = String.valueOf(desiredRating);
+
+		List<BookModel> books = new ArrayList<>();
 
 		Configuration conf = new Configuration();
 		try (Connection connection = ConnectionFactory.createConnection(conf);
@@ -430,50 +299,23 @@ public class BookDAOImpl implements IBookDAO {
 			Scan scan = new Scan();
 			SingleColumnValueFilter filter = new SingleColumnValueFilter(Bytes.toBytes(columnFamily),
 					Bytes.toBytes(columnName), CompareOperator.GREATER_OR_EQUAL,
-					new BinaryComparator(Integer.toString(desiredRating).getBytes()));
+					new BinaryComparator(Bytes.toBytes(Float.parseFloat(rating))));
+
 			scan.setFilter(filter);
 
 			try (ResultScanner scanner = table.getScanner(scan)) {
 				for (Result result : scanner) {
-					BookModel bookModel = new BookModel();
-					bookModel.setIsbn13(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn13"))));
-					bookModel.setIsbn10(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn10"))));
-					bookModel.setTitle(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("title"))));
-					bookModel.setAuthors(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("authors"))));
-					bookModel.setCategories(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("categories"))));
-					bookModel.setThumbnail(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("thumbnail"))));
-					bookModel.setDescription(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("description"))));
-
-					byte[] publishedYearBytes = result.getValue(DETAIL_CF, Bytes.toBytes("published_year"));
-					if (publishedYearBytes != null && publishedYearBytes.length >= Bytes.SIZEOF_INT) {
-						bookModel.setPublished_year(Bytes.toInt(publishedYearBytes));
-					} else {
-						// Handle null value or insufficient byte array length
-						bookModel.setPublished_year(0); // Set a default value or log a message
-					}
-
-					byte[] averageRatingBytes = result.getValue(DETAIL_CF, Bytes.toBytes("average_rating"));
-					if (averageRatingBytes != null && averageRatingBytes.length >= Bytes.SIZEOF_FLOAT) {
-						bookModel.setAverage_rating(Bytes.toFloat(averageRatingBytes));
-					} else {
-						bookModel.setAverage_rating(0.0f);
-
-						byte[] ratingsCountBytes = result.getValue(DETAIL_CF, Bytes.toBytes("ratings_count"));
-						if (ratingsCountBytes != null && ratingsCountBytes.length >= Bytes.SIZEOF_INT) {
-							bookModel.setRatings_count(Bytes.toInt(ratingsCountBytes));
-						} else {
-							bookModel.setRatings_count(0);
-						}
-
-						listBook.add(bookModel);
-					}
+					BookModel book = constructBookFromResult(result);
+					books.add(book);
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
-			return listBook;
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+
+		return books;
 	}
 
 	@Override
@@ -501,7 +343,7 @@ public class BookDAOImpl implements IBookDAO {
 		String tableName = "books";
 		String columnFamily = "info";
 		String columnName = "categories";
-		List<BookModel> listBook = new ArrayList<>();
+		List<BookModel> books = new ArrayList<>();
 
 		Configuration conf = new Configuration();
 		try (Connection connection = ConnectionFactory.createConnection(conf);
@@ -513,48 +355,23 @@ public class BookDAOImpl implements IBookDAO {
 
 			try (ResultScanner scanner = table.getScanner(scan)) {
 				for (Result result : scanner) {
-					BookModel bookModel = new BookModel();
-					bookModel.setIsbn13(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn13"))));
-					bookModel.setIsbn10(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn10"))));
-					bookModel.setTitle(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("title"))));
-					bookModel.setAuthors(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("authors"))));
-					bookModel.setCategories(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("categories"))));
-					bookModel.setThumbnail(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("thumbnail"))));
-					bookModel.setDescription(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("description"))));
-
-					byte[] publishedYearBytes = result.getValue(DETAIL_CF, Bytes.toBytes("published_year"));
-					if (publishedYearBytes != null && publishedYearBytes.length >= Bytes.SIZEOF_INT) {
-						bookModel.setPublished_year(Bytes.toInt(publishedYearBytes));
-					} else {
-						bookModel.setPublished_year(0);
-					}
-
-					byte[] averageRatingBytes = result.getValue(DETAIL_CF, Bytes.toBytes("average_rating"));
-					if (averageRatingBytes != null && averageRatingBytes.length >= Bytes.SIZEOF_FLOAT) {
-						bookModel.setAverage_rating(Bytes.toFloat(averageRatingBytes));
-					} else {
-						bookModel.setAverage_rating(0.0f);
-					}
-
-					byte[] ratingsCountBytes = result.getValue(DETAIL_CF, Bytes.toBytes("ratings_count"));
-					if (ratingsCountBytes != null && ratingsCountBytes.length >= Bytes.SIZEOF_INT) {
-						bookModel.setRatings_count(Bytes.toInt(ratingsCountBytes));
-					} else {
-						bookModel.setRatings_count(0);
-					}
-
-					listBook.add(bookModel);
+					BookModel book = constructBookFromResult(result);
+					books.add(book);
 				}
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-		} catch (IOException e) {
+		} catch (
+
+		IOException e) {
 			e.printStackTrace();
 		}
 
-		return listBook;
+		return books;
 	}
 
 	@Override
-	public List<List<Entry<String,Long>>> findToFilter() {
+	public List<List<Entry<String, Long>>> findToFilter() {
 		String tableName = "books";
 		String columnFamily = "info";
 		String columnName1 = "categories";
@@ -582,62 +399,60 @@ public class BookDAOImpl implements IBookDAO {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		List<List<Entry<String,Long>>> listFilter = new ArrayList<List<Entry<String,Long>>>();
-		listFilter.add(categoriesList
-				.stream()
-				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
-				.entrySet()
-				.stream()
-				.sorted(Map.Entry.<String, Long>comparingByValue().reversed())
-				.limit(5)
+		List<List<Entry<String, Long>>> listFilter = new ArrayList<List<Entry<String, Long>>>();
+		listFilter.add(categoriesList.stream()
+				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).entrySet().stream()
+				.sorted(Map.Entry.<String, Long>comparingByValue().reversed()).limit(5).collect(Collectors.toList()));
+
+		listFilter.add(authorsList.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+				.entrySet().stream().sorted(Map.Entry.<String, Long>comparingByValue().reversed()).limit(5)
 				.collect(Collectors.toList()));
-		
-		listFilter.add(authorsList
-				.stream()
-				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
-				.entrySet()
-				.stream()
-				.sorted(Map.Entry.<String, Long>comparingByValue().reversed())
-				.limit(5)
-				.collect(Collectors.toList()));
-		
-		 return listFilter;
-		}
-	
+
+		return listFilter;
+	}
+
 	private BookModel constructBookFromResult(Result result) {
-		BookModel book = new BookModel();
+		BookModel bookmodel = new BookModel();
 
-		book.setIsbn13(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn13"))));
-		book.setIsbn10(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn10"))));
-		book.setTitle(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("title"))));
-		book.setAuthors(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("authors"))));
-		book.setCategories(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("categories"))));
-		book.setThumbnail(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("thumbnail"))));
-		book.setDescription(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("description"))));
-
+		bookmodel = new BookModel();
+		bookmodel.setIsbn13(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn13"))));
+		bookmodel.setIsbn10(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("isbn10"))));
+		bookmodel.setTitle(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("title"))));
+		bookmodel.setAuthors(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("authors"))));
+		bookmodel.setCategories(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("categories"))));
+		bookmodel.setThumbnail(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("thumbnail"))));
+		String description = Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("description")));
+		if (description != null && description.length() > 150) {
+			description = description.substring(1, 150);
+		} else if (description.length() >= 1 && description.length() <= 150) {
+			description = description.substring(1);
+		}
+		bookmodel.setDescription(description);
 		byte[] publishedYearBytes = result.getValue(DETAIL_CF, Bytes.toBytes("published_year"));
 		if (publishedYearBytes != null && publishedYearBytes.length >= Bytes.SIZEOF_INT) {
-			book.setPublished_year(Bytes.toInt(publishedYearBytes));
+			bookmodel.setPublished_year(Bytes.toInt(publishedYearBytes));
 		} else {
-			book.setPublished_year(0);
+			bookmodel.setPublished_year(0);
 		}
 
 		byte[] averageRatingBytes = result.getValue(DETAIL_CF, Bytes.toBytes("average_rating"));
 		if (averageRatingBytes != null && averageRatingBytes.length >= Bytes.SIZEOF_FLOAT) {
-			book.setAverage_rating(Bytes.toFloat(averageRatingBytes));
+			bookmodel.setAverage_rating(Bytes.toFloat(averageRatingBytes));
 		} else {
-			book.setAverage_rating(0.0f);
+			bookmodel.setAverage_rating(0.0f);
 		}
-
 		byte[] ratingsCountBytes = result.getValue(DETAIL_CF, Bytes.toBytes("ratings_count"));
 		if (ratingsCountBytes != null && ratingsCountBytes.length >= Bytes.SIZEOF_INT) {
-			book.setRatings_count(Bytes.toInt(ratingsCountBytes));
+			bookmodel.setRatings_count(Bytes.toInt(ratingsCountBytes));
 		} else {
-			book.setRatings_count(0);
+			bookmodel.setRatings_count(0);
 		}
-
-		return book;
+		byte[] numPages = result.getValue(DETAIL_CF, Bytes.toBytes("numbers"));
+		if (numPages != null && numPages.length >= Bytes.SIZEOF_INT) {
+			bookmodel.setNum_pages(Bytes.toInt(numPages));
+		} else {
+			bookmodel.setNum_pages(0);
+		}
+		return bookmodel;
 	}
-
-
 }

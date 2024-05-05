@@ -15,7 +15,7 @@ import com.azshop.models.BookModel;
 import com.azshop.service.IBookService;
 import com.azshop.service.impl.BookServiceImpl;
 
-@WebServlet(urlPatterns = { "/adminBook", "/adminInsertBook",  "/adminUpdateBook" , "/adminDeleteBook" })
+@WebServlet(urlPatterns = { "/adminBook", "/adminInsertBook", "/adminUpdateBook", "/adminDeleteBook" })
 public class BookController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	IBookService bookService = new BookServiceImpl();
@@ -30,9 +30,9 @@ public class BookController extends HttpServlet {
 			ListBook(req, resp);
 		} else if (url.contains("adminInsertBook")) {
 			insert(req, resp);
-		}else if (url.contains("adminUpdateBook")) {
-			getBookUpdate(req, resp) ;
-		}else if (url.contains("adminDeleteBook")) {
+		} else if (url.contains("adminUpdateBook")) {
+			getBookUpdate(req, resp);
+		} else if (url.contains("adminDeleteBook")) {
 			delete(req, resp);
 		}
 
@@ -50,14 +50,14 @@ public class BookController extends HttpServlet {
 		req.setAttribute("book", book);
 		RequestDispatcher rd = req.getRequestDispatcher("/views/admin/updateBook.jsp");
 		rd.forward(req, resp);
-		
+
 	}
 
 	private void ListBook(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		List<BookModel> listBook = bookService.findAll();
 		req.setAttribute("books", listBook);
 		req.getRequestDispatcher("/views/admin/books.jsp").forward(req, resp);
-		
+
 	}
 
 	private void insert(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -72,7 +72,7 @@ public class BookController extends HttpServlet {
 		resp.setCharacterEncoding("UTF-8");
 		if (url.contains("adminInsertBook")) {
 			postinsert(req, resp);
-		}else if (url.contains("adminUpdateBook")) {
+		} else if (url.contains("adminUpdateBook")) {
 			updateBook(req, resp);
 		}
 	}
@@ -101,16 +101,14 @@ public class BookController extends HttpServlet {
 			book.setThumbnail(thumbnail);
 			book.setPublished_year(published_year);
 			book.setAverage_rating(average_rating);
-//			book.setNumbers(num_pages);
+			book.setNum_pages(num_pages);
 			book.setRatings_count(ratings_count);
 			bookService.update(book);
-
-//			MessageUtil.showMessage(req, "addSuccess");
 		} catch (Exception ex) {
-//			MessageUtil.showMessage(req, "addFail");
+
 		}
 		ListBook(req, resp);
-		
+
 	}
 
 	private void postinsert(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -139,9 +137,9 @@ public class BookController extends HttpServlet {
 			book.setAverage_rating(average_rating);
 //			book.setNumbers(num_pages);
 			book.setRatings_count(ratings_count);
-			
+
 			bookService.insert(book);
-			
+
 //			MessageUtil.showMessage(req, "addSuccess");
 		} catch (Exception ex) {
 //			MessageUtil.showMessage(req, "addFail");

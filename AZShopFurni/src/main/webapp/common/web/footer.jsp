@@ -8,32 +8,10 @@
 
 			<div class="col-sm-6 col-lg-3 p-b-10">
 				<a href="<c:url value='/home'/>"> <img alt="Logo-web"
-					style="width: 200px"
-					src="https://avatars.githubusercontent.com/u/75773455?s=280&v=4">
+					style="width: 200px" src="images/icon.png">
 				</a>
 			</div>
 
-			<!-- <div class="col-sm-6 col-lg-3 p-b-10">
-				<h4 class="stext-301 cl2 p-b-10">DANH MỤC</h4>
-
-				<ul style="padding-left: 0;">
-					<li class="p-b-10"><a href="#"
-						class="stext-107 cl6 hov-cl1 trans-04"> Fiction </a></li>
-				</ul>
-				<ul style="padding-left: 0;">
-					<li class="p-b-10"><a href="#"
-						class="stext-107 cl6 hov-cl1 trans-04"> Non Fiction </a></li>
-				</ul>
-				<ul style="padding-left: 0;">
-					<li class="p-b-10"><a href="#"
-						class="stext-107 cl6 hov-cl1 trans-04"> Dictionary </a></li>
-				</ul>
-				<ul style="padding-left: 0;">
-					<li class="p-b-10"><a href="#"
-						class="stext-107 cl6 hov-cl1 trans-04"> Science </a></li>
-				</ul>
-			</div>
- -->
 			<div class="col-sm-6 col-lg-3 p-b-10">
 				<h4 class="stext-301 cl2 p-b-10">HỖ TRỢ</h4>
 

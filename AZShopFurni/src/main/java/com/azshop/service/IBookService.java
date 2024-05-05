@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import com.azshop.models.BookModel;
 import java.util.Map;
 import java.util.Map.Entry;
+
 public interface IBookService {
 	List<BookModel> findAll();
 
@@ -27,11 +28,12 @@ public interface IBookService {
 
 	void update(BookModel model);
 
-	List<BookModel> filterByRating(int rate)  throws IOException;
-List<Object> findTop() throws IOException;
-	
+	List<BookModel> filterByRating(int rate) throws IOException;
+
+	List<Object> findTop() throws IOException;
+
 	List<String> findTopAuthor() throws IOException;
-	
+
 	List<Object> findToReport() throws IOException;
 
 	List<BookModel> findSameCategory(String categories);
