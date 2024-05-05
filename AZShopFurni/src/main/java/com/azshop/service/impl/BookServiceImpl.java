@@ -123,7 +123,6 @@ public class BookServiceImpl implements IBookService {
 	@Override
 	public List<Object> findToReport() throws IOException {
 		List<BookModel> listBook = bookDAO.findAll();
-		Long count = (long)listBook.size();
 		List<Entry<Integer, Long>> countPubYear = listBook
 				.stream()
 				.collect(Collectors.groupingBy(BookModel::getPublished_year, Collectors.counting()))
@@ -150,19 +149,6 @@ public class BookServiceImpl implements IBookService {
 				.sorted(Map.Entry.<Float, Long>comparingByKey())
 		 		.collect(Collectors.toList());
 		
-//		int sumcount = listBook
-//				.stream()
-//				.collect(Collectors.summingInt(BookModel::getRatings_count));
-//
-//		
-//			
-//		List<Entry<Integer, Double>> avgRatingPubYear = listBook
-//				.stream()
-//				.collect(Collectors.groupingBy(BookModel::getPublished_year, Collectors.summingDouble(BookModel::getAverage_rating)))
-//				.entrySet().stream()
-//				.sorted(Map.Entry.<Integer, Double>comparingByKey())
-//		 		.collect(Collectors.toList());
-		
 		List<Object> list = new ArrayList<Object>();
 		
 		
@@ -173,21 +159,6 @@ public class BookServiceImpl implements IBookService {
 		return list;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static void main(String[] args) {
-		try {
-		IBookService bookService = new BookServiceImpl();
-			List<Object> list =  bookService.findToReport();
-			List<Entry<Float, Long>> countPubYear = (List<Entry<Float, Long>>)list.get(2);
-			
-			
-			countPubYear.forEach(b -> System.out.println(b.getKey() +" "+b.getValue()));
-			//bookService.findAll().forEach(b -> System.out.println(b.getAverage_rating()));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }
 
 	@Override
 	public List<BookModel> findSameCategory(String categories) {

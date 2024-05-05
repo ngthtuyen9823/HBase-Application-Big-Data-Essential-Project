@@ -38,13 +38,13 @@ public class InitData {
                  BufferedReader reader = new BufferedReader(new FileReader(new File(dataFileName)))) {
 
                 String line;
+                reader.readLine();
                 while ((line = reader.readLine()) != null) {
                 	String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
                     if (values.length < 11) {
                         System.err.println("Invalid data format. Skipping line: " + line);
                         continue;
                     }
-
                     String isbn13 = values[0];
                     String isbn10 = values[1];
                     String title = values[2];
@@ -52,10 +52,10 @@ public class InitData {
                     String categories = values[4];
                     String thumbnail = values[5];
                     String description = values[6];
-                    String publishedYear = values[7];
-                    String averageRating = values[8];
-                    String numbers = values[9];
-                    String ratingsCount = values[10];
+                    int publishedYear = Integer.valueOf(values[7]);
+                    float averageRating = Float.parseFloat(values[8]);
+                    int numbers = Integer.valueOf(values[9]);
+                    int ratingsCount = Integer.valueOf(values[10]);
                     
                     String rowKey = isbn10;
                     
