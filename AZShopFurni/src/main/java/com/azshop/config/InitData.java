@@ -56,9 +56,9 @@ public class InitData {
                     String averageRating = values[8];
                     String numbers = values[9];
                     String ratingsCount = values[10];
-
+                    
                     String rowKey = isbn10;
-
+                    
                     Put put = new Put(Bytes.toBytes(rowKey));
                     put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("isbn13"), Bytes.toBytes(isbn13));
                     put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("isbn10"), Bytes.toBytes(isbn10));

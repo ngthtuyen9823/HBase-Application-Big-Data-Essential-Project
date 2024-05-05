@@ -36,11 +36,13 @@ public class HomeController extends HttpServlet {
 		List<Object> list =  bookService.findToReport();
 		List<Entry<Integer, Long>> countPubYear = (List<Entry<Integer, Long>>)list.get(0);
 		List<Entry<Integer, Long>> countRatingPubYear = (List<Entry<Integer, Long>>)list.get(1);
+		List<Entry<Float, Long>> countavgRating = (List<Entry<Float, Long>>)list.get(2);
 		
 		//countPubYear.get(0).getValue()
 		req.setAttribute("countpubyear", countPubYear);
 		req.setAttribute("countratingpubyear", countRatingPubYear);
-
+		req.setAttribute("countavgrating", countavgRating);
+		
 		req.getRequestDispatcher("/views/admin/statistical.jsp").forward(req, resp);
 	}
 //	ĐỂ CÓ GÌ XEM LẠI LOGIN

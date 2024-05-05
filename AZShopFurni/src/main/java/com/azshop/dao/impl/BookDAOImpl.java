@@ -27,6 +27,8 @@ import org.apache.hadoop.hbase.filter.*;
 import com.azshop.config.InitData;
 import com.azshop.dao.IBookDAO;
 import com.azshop.models.BookModel;
+import com.azshop.service.IBookService;
+import com.azshop.service.impl.BookServiceImpl;
 
 public class BookDAOImpl implements IBookDAO {
 	private static final byte[] INFO_CF = Bytes.toBytes("info");
