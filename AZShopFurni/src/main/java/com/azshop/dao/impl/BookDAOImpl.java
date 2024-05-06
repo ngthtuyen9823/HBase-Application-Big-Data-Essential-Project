@@ -223,8 +223,7 @@ public class BookDAOImpl implements IBookDAO {
 						Bytes.toBytes(model.getPublished_year()));
 				put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("average_rating"),
 						Bytes.toBytes(model.getAverage_rating()));
-				put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("numbers"),
-						Bytes.toBytes(model.getNum_pages()));
+				put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("numbers"), Bytes.toBytes(model.getNum_pages()));
 				put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("ratings_count"),
 						Bytes.toBytes(model.getRatings_count()));
 
@@ -272,8 +271,7 @@ public class BookDAOImpl implements IBookDAO {
 						Bytes.toBytes(model.getPublished_year()));
 				put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("average_rating"),
 						Bytes.toBytes(model.getAverage_rating()));
-				put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("numbers"),
-						Bytes.toBytes(model.getNum_pages()));
+				put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("numbers"), Bytes.toBytes(model.getNum_pages()));
 				put.addColumn(Bytes.toBytes("detail"), Bytes.toBytes("ratings_count"),
 						Bytes.toBytes(model.getRatings_count()));
 
@@ -362,12 +360,9 @@ public class BookDAOImpl implements IBookDAO {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		} catch (
-
-		IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 		return books;
 	}
 
@@ -423,11 +418,25 @@ public class BookDAOImpl implements IBookDAO {
 		bookmodel.setCategories(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("categories"))));
 		bookmodel.setThumbnail(Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("thumbnail"))));
 		String description = Bytes.toString(result.getValue(INFO_CF, Bytes.toBytes("description")));
-		if (description != null && description.length() > 150) {
-			description = description.substring(1, 150);
-		} else if (description.length() >= 1 && description.length() <= 150) {
-			description = description.substring(1);
+
+		// handle description too long
+		if (description != null) {
+			if (description.length() > 200) {
+				if (description.startsWith("\"")) {
+					description = description.substring(1, 201);
+				} else {
+					description = description.substring(0, 200);
+				}
+			} else if (description.length() <= 200) {
+				if (description.startsWith("\"")) {
+					description = description.substring(1);
+				} else {
+					description = description.substring(0);
+				}
+
+			}
 		}
+
 		bookmodel.setDescription(description);
 		byte[] publishedYearBytes = result.getValue(DETAIL_CF, Bytes.toBytes("published_year"));
 		if (publishedYearBytes != null && publishedYearBytes.length >= Bytes.SIZEOF_INT) {

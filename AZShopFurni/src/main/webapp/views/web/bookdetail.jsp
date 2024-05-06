@@ -114,15 +114,15 @@
 		<c:forEach items="${listBookCate}" var="item" varStatus="loop">
 			<div class="product-card">
 				<div class="product-image">
-					<a href="<c:url value='/products?id=${item.isbn10}' />"
+					<a href="<c:url value='/books?id=${item.isbn10}' />"
 						class="product-image"><img src="${item.thumbnail}"
 						class="product-thumb" alt=""> </a>
 				</div>
 				<div class="product-info">
 					<h2 class="product-brand">${item.title}</h2>
-					<p class="product-short-description">${item.description}</p>				
+					<p class="product-short-description">${item.description}</p>
 				</div>
 			</div>
 		</c:forEach>
 	</div>
-</section> 
+</section>

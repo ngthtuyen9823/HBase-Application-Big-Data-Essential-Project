@@ -25,7 +25,7 @@
 			</div>
 
 			<div class="col-sm-6 col-lg-3 p-b-10">
-				<h4 class="stext-301 cl2 p-b-10">ĐỊA CHỈ CỬA HÀNG</h4>
+				<h4 class="stext-301 cl2 p-b-10">ĐỊA CHỈ THƯ VIỆN</h4>
 
 				<p class="stext-107 cl6 size-201">Địa chỉ: 01 Đường Võ Văn Ngân,
 					P. Linh Chiểu, TP. Thủ Đức, TP. Hồ Chí Minh.</p>

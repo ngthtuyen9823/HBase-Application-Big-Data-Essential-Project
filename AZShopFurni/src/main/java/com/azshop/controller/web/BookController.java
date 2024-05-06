@@ -62,8 +62,6 @@ public class BookController extends HttpServlet {
 			}
 			if (req.getParameter("authorsKey") != null) {
 				String key = req.getParameter("authorsKey");
-				System.out.println(key);
-
 				List<BookModel> listBook = bookService.findByAuthor(key);
 				req.setAttribute("listCate", listCategories);
 				req.setAttribute("listAuthors", listAuthors);
@@ -77,7 +75,6 @@ public class BookController extends HttpServlet {
 		if (req.getRequestURI().contains("filter")) {
 			if (req.getParameter("avgRating") != null) {
 				int key = Integer.parseInt(req.getParameter("avgRating"));
-				System.out.println(key);
 				List<BookModel> listBook = bookService.filterByRating(key);
 
 				req.setAttribute("books", listBook);
