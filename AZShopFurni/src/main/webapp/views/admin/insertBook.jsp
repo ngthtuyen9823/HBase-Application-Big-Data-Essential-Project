@@ -21,58 +21,53 @@
 								<div class="row">
 									<div class="col-md-6">
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="isbn13" />
-											<label>ISBN 13</label>
+											<input class="form-control" type="text" name="isbn13" /> <label>ISBN
+												13</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="isbn10" />
-											<label>ISBN 10</label>
+											<input class="form-control" type="text" name="isbn10" /> <label>ISBN
+												10</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="title" /> 
-											<label>Title</label>
+											<input class="form-control" type="text" name="title" /> <label>Title</label>
+										</div>
+
+										<div class="form-floating mb-3">
+											<input class="form-control" type="text" name="authors" /> <label>Authors</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="subtitle" /> 
-											<label>Subtitle</label>
-										</div>
-										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="authors" /> 
-											<label>Authors</label>
-										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="categories" /> 
+											<input class="form-control" type="text" name="categories" />
 											<label>Categories</label>
-										</div>
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="thumbnail" /> 
+											<input class="form-control" type="text" name="thumbnail" />
 											<label>Thumbnail</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="description" /> 
+											<input class="form-control" type="text" name="description" />
 											<label>Description</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="published_year" /> 
+											<input class="form-control" type="text" name="published_year" />
 											<label>Publish Year</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="average_rating" /> 
+											<input class="form-control" type="text" name="average_rating" />
 											<label>Average Rating</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="num_pages" /> 
+											<input class="form-control" type="text" name="num_pages" />
 											<label>Num pages</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="ratings_count" /> 
+											<input class="form-control" type="text" name="ratings_count" />
 											<label>Ratings count</label>
 										</div>
 
 
-<%-- 										<div class="form-floating mb-3">
+										<%-- 										<div class="form-floating mb-3">
 											<select name="supplier" class="form-control">
 												<option value="" style="text-align: center">--
 													Select --</option>

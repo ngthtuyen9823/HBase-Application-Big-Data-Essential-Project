@@ -28,8 +28,8 @@ public class BookController extends HttpServlet {
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");
 		req.setCharacterEncoding("UTF-8");
-		List<Entry<String,Long>> listCategories = bookService.findToFilter().get(0);
-		List<Entry<String,Long>> listAuthors = bookService.findToFilter().get(1);
+		List<Entry<String, Long>> listCategories = bookService.findToFilter().get(0);
+		List<Entry<String, Long>> listAuthors = bookService.findToFilter().get(1);
 
 		if (req.getRequestURI().contains("/books")) {
 			List<BookModel> listBook = bookService.findWithCount(20);
@@ -41,11 +41,8 @@ public class BookController extends HttpServlet {
 			String id = req.getParameter("id");
 			if (id != null) {
 				BookModel bookModel = bookService.findOne(id);
-
 				List<BookModel> listBookCate = bookService.findSameCategory(bookModel.getCategories());
-
 				req.setAttribute("listBookCate", listBookCate);
-
 				req.setAttribute("book", bookModel);
 				req.getRequestDispatcher("/views/web/bookdetail.jsp").forward(req, resp);
 				return; // Return after forwarding, to avoid further processing
@@ -65,8 +62,6 @@ public class BookController extends HttpServlet {
 			}
 			if (req.getParameter("authorsKey") != null) {
 				String key = req.getParameter("authorsKey");
-				System.out.println(key);
-
 				List<BookModel> listBook = bookService.findByAuthor(key);
 				req.setAttribute("listCate", listCategories);
 				req.setAttribute("listAuthors", listAuthors);
@@ -80,7 +75,6 @@ public class BookController extends HttpServlet {
 		if (req.getRequestURI().contains("filter")) {
 			if (req.getParameter("avgRating") != null) {
 				int key = Integer.parseInt(req.getParameter("avgRating"));
-				System.out.println(key);
 				List<BookModel> listBook = bookService.filterByRating(key);
 
 				req.setAttribute("books", listBook);
@@ -100,7 +94,7 @@ public class BookController extends HttpServlet {
 				req.getRequestDispatcher("/views/web/books.jsp").forward(req, resp);
 				return;
 			}
-			
+
 			if (req.getParameter("Author") != null) {
 				String key = req.getParameter("Author");
 				List<BookModel> listBook = bookService.findByAuthor(key);

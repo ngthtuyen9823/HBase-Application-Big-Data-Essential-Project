@@ -53,7 +53,7 @@ public class BookServiceImpl implements IBookService {
 	}
 
 	@Override
-	public List<BookModel> findByAuthor(String key)throws IOException {
+	public List<BookModel> findByAuthor(String key) throws IOException {
 		// TODO Auto-generated method stub
 		return bookDAO.findByAuthor(key);
 	}
@@ -86,87 +86,69 @@ public class BookServiceImpl implements IBookService {
 		// TODO Auto-generated method stub
 		return bookDAO.filterByRating(rate);
 	}
-	
+
 	@Override
-	public List<Object> findTop() throws IOException{
+	public List<Object> findTop() throws IOException {
 		List<BookModel> listBook = bookDAO.findAll();
-		
-		List<BookModel> listTopRatingBook = listBook
-				.stream()
-				.sorted((b2,b1)->Float.compare(b1.getAverage_rating(),b2.getAverage_rating()))
-				.limit(5)
+
+		List<BookModel> listTopRatingBook = listBook.stream()
+				.sorted((b2, b1) -> Float.compare(b1.getAverage_rating(), b2.getAverage_rating())).limit(5)
 				.collect(Collectors.toList());
-		List<BookModel> listTopRatingCountBook = listBook
-				.stream()
-				.sorted((b2,b1)->Integer.compare(b1.getRatings_count(),b2.getRatings_count()))
-				.limit(5)
+		List<BookModel> listTopRatingCountBook = listBook.stream()
+				.sorted((b2, b1) -> Integer.compare(b1.getRatings_count(), b2.getRatings_count())).limit(5)
 				.collect(Collectors.toList());
 		List<Object> list = new ArrayList<Object>();
 		list.add(listTopRatingBook);
 		list.add(listTopRatingCountBook);
 		return list;
 	}
-	
+
 	@Override
 	public List<String> findTopAuthor() throws IOException {
-		 Map<String, Long> AuthorandCount = bookDAO.findAuthor().stream()
-				 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-		 
-		 return AuthorandCount.entrySet().stream()
-		 		.sorted(Map.Entry.<String, Long>comparingByValue()
-	            .reversed())
-		 		.limit(5)
-		 		.map(e -> e.getKey())
-		 		.collect(Collectors.toList());
+		Map<String, Long> AuthorandCount = bookDAO.findAuthor().stream()
+				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+		return AuthorandCount.entrySet().stream().sorted(Map.Entry.<String, Long>comparingByValue().reversed()).limit(5)
+				.map(e -> e.getKey()).collect(Collectors.toList());
 	}
-	
+
 	@Override
 	public List<Object> findToReport() throws IOException {
 		List<BookModel> listBook = bookDAO.findAll();
-		List<Entry<Integer, Long>> countPubYear = listBook
-				.stream()
-				.collect(Collectors.groupingBy(BookModel::getPublished_year, Collectors.counting()))
-				.entrySet().stream()
-				.sorted(Map.Entry.<Integer, Long>comparingByKey())
-		 		.collect(Collectors.toList());
-		
-		List<Entry<Integer, Long>> countRatingPubYear = listBook
-				.stream()
-				.collect(Collectors.groupingBy(BookModel::getPublished_year, Collectors.summingLong(BookModel::getRatings_count)))
-				.entrySet().stream()
-				.sorted(Map.Entry.<Integer, Long>comparingByKey())
-		 		.collect(Collectors.toList());
-		
+		List<Entry<Integer, Long>> countPubYear = listBook.stream()
+				.collect(Collectors.groupingBy(BookModel::getPublished_year, Collectors.counting())).entrySet().stream()
+				.sorted(Map.Entry.<Integer, Long>comparingByKey()).collect(Collectors.toList());
+
+		List<Entry<Integer, Long>> countRatingPubYear = listBook.stream()
+				.collect(Collectors.groupingBy(BookModel::getPublished_year,
+						Collectors.summingLong(BookModel::getRatings_count)))
+				.entrySet().stream().sorted(Map.Entry.<Integer, Long>comparingByKey()).collect(Collectors.toList());
+
 		int one = 1;
-		listBook
-		.stream()
-		.forEach(e -> e.setAverage_rating(e.getAverage_rating() / one));
-		
-		List<Entry<Float, Long>> avgRatingPubYear = listBook
-				.stream()
-				.collect(Collectors.groupingBy(BookModel::getAverage_rating, Collectors.summingLong(BookModel::getRatings_count)))
-				.entrySet().stream()
-				.sorted(Map.Entry.<Float, Long>comparingByKey())
-		 		.collect(Collectors.toList());
-		
+		listBook.stream().forEach(e -> e.setAverage_rating(e.getAverage_rating() / one));
+
+		List<Entry<Float, Long>> avgRatingPubYear = listBook.stream()
+				.collect(Collectors.groupingBy(BookModel::getAverage_rating,
+						Collectors.summingLong(BookModel::getRatings_count)))
+				.entrySet().stream().sorted(Map.Entry.<Float, Long>comparingByKey()).collect(Collectors.toList());
+
 		List<Object> list = new ArrayList<Object>();
-		
-		
+
 		list.add(countPubYear);
 		list.add(countRatingPubYear);
 		list.add(avgRatingPubYear);
-		
+
 		return list;
 	}
-	
 
 	@Override
 	public List<BookModel> findSameCategory(String categories) {
 		return bookDAO.findSameCategory(categories);
 	}
+
 	@Override
 
-	public List<List<Entry<String,Long>>> findToFilter() {
+	public List<List<Entry<String, Long>>> findToFilter() {
 		return bookDAO.findToFilter();
 	}
 }

@@ -13,8 +13,7 @@
 		<div class="wrap-menu-desktop how-shadow1">
 			<nav class="limiter-menu-desktop container">
 				<a href="<c:url value='/home'/>" class="logo"> <img
-					src="https://avatars.githubusercontent.com/u/75773455?s=280&v=4"
-					alt="IMG-LOGO">
+					src="images/icon.png" alt="IMG-LOGO">
 				</a>
 
 				<!-- Menu desktop -->
@@ -71,7 +70,7 @@
 			</form>
 		</div>
 	</div>
-	
+
 </header>
 
 

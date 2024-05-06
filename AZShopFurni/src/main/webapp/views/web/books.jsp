@@ -176,7 +176,18 @@
 											<a href='<c:url value="/books?id=${item.isbn10}"/>'
 												class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
 												${item.title} </a> <span class="stext-105 cl3">
-												${item.description} </span>
+												${item.description} </span> <span class="stext-105 cl3"> <i
+												class="fas fa-star"
+												style="${item.average_rating >= 1 ? 'color: gold;' : ''}"></i>
+												<i class="fas fa-star"
+												style="${item.average_rating >= 2 ? 'color: gold;' : ''}"></i>
+												<i class="fas fa-star"
+												style="${item.average_rating >= 3 ? 'color: gold;' : ''}"></i>
+												<i class="fas fa-star"
+												style="${item.average_rating >= 4 ? 'color: gold;' : ''}"></i>
+												<i class="fas fa-star"
+												style="${item.average_rating >= 5 ? 'color: gold;' : ''}"></i>
+											</span>
 										</div>
 									</div>
 								</div>
