@@ -87,12 +87,8 @@
 										id="selectedQuantity" value="1">
 								</div>
 								<div class="text-center">
-									<input onclick="addToCart()"
-										style="width: 100%; padding: 1rem; cursor: pointer; float: right"
-										class="btn btn-primary shadow-0 flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail"
-										value="Đặt mượn" readonly
-										onmouseover="this.style.cursor='pointer';"
-										onmouseout="this.style.cursor='default';" />
+									<a class="nav-link" href="<c:url value='/BorrowBook'/>">Đặt mượn
+									</a>
 								</div>
 							</form>
 						</dd>

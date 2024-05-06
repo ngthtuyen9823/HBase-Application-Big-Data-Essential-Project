@@ -13,7 +13,7 @@ import com.azshop.models.BookModel;
 import com.azshop.service.IBookService;
 import com.azshop.service.impl.BookServiceImpl;
 
-@WebServlet(urlPatterns = { "/home", "/contact" })
+@WebServlet(urlPatterns = { "/home", "/contact", "/BorrowBook" })
 public class HomeController extends HttpServlet {
 
 	private static final long serialVersionUID = 4317368494648713183L;
@@ -38,6 +38,18 @@ public class HomeController extends HttpServlet {
 
 		} else if (req.getRequestURI().contains("/contact")) {
 			req.getRequestDispatcher("/views/web/contact.jsp").forward(req, resp);
+		} else if (req.getRequestURI().contains("/BorrowBook")) {
+			req.getRequestDispatcher("/views/web/borrow.jsp").forward(req, resp);
+		}
+	}
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.setContentType("text/html");
+		resp.setCharacterEncoding("UTF-8");
+		req.setCharacterEncoding("UTF-8");
+
+		if (req.getRequestURI().contains("/BorrowBook")) {
+			req.getRequestDispatcher("/views/web/home.jsp").forward(req, resp);
 		}
 	}
 }

@@ -32,16 +32,32 @@ public class HomeController extends HttpServlet {
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");
 		req.setCharacterEncoding("UTF-8");
-
-		List<Object> list = bookService.findToReport();
-		List<Entry<Integer, Long>> countPubYear = (List<Entry<Integer, Long>>) list.get(0);
-		List<Entry<Integer, Long>> countRatingPubYear = (List<Entry<Integer, Long>>) list.get(1);
-		List<Entry<Float, Long>> countavgRating = (List<Entry<Float, Long>>) list.get(2);
-
-		req.setAttribute("countpubyear", countPubYear);
-		req.setAttribute("countratingpubyear", countRatingPubYear);
-		req.setAttribute("countavgrating", countavgRating);
-
-		req.getRequestDispatcher("/views/admin/statistical.jsp").forward(req, resp);
+//
+//		List<Object> list = bookService.findToReport();
+//		List<Entry<Integer, Long>> countPubYear = (List<Entry<Integer, Long>>) list.get(0);
+//		List<Entry<Integer, Long>> countRatingPubYear = (List<Entry<Integer, Long>>) list.get(1);
+//		List<Entry<Float, Long>> countavgRating = (List<Entry<Float, Long>>) list.get(2);
+//
+//		req.setAttribute("countpubyear", countPubYear);
+//		req.setAttribute("countratingpubyear", countRatingPubYear);
+//		req.setAttribute("countavgrating", countavgRating);
+//
+//		req.getRequestDispatcher("/views/admin/statistical.jsp").forward(req, resp);
+		List<BookModel> books = new ArrayList<BookModel>();
+		BookModel book = new BookModel();
+		book.setIsbn13("1");
+		book.setIsbn10("2");
+		book.setTitle("Muôn Kiếp Nhân Sinh");
+		book.setCategories("Tâm Linh");
+		book.setNum_pages(10);
+		book.setDescription("Gieo nhân nào gặp quả đấy");
+		book.setRatings_count(10);
+		book.setAverage_rating(5);
+		book.setAuthors("Nguyên Phong");
+		book.setThumbnail("https://fahashavn");
+		
+		books.add(book);
+		req.setAttribute("books", books);
+		req.getRequestDispatcher("/views/admin/books.jsp").forward(req, resp);
 	}
 }

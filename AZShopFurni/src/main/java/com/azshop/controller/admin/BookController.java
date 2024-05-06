@@ -15,7 +15,8 @@ import com.azshop.models.BookModel;
 import com.azshop.service.IBookService;
 import com.azshop.service.impl.BookServiceImpl;
 
-@WebServlet(urlPatterns = { "/adminBook", "/adminInsertBook", "/adminUpdateBook", "/adminDeleteBook" })
+@WebServlet(urlPatterns = { "/adminBook", "/adminInsertBook", "/adminUpdateBook", "/adminDeleteBook", "/adminReader",
+		"/adminInsertReader", "/adminStaff" })
 public class BookController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	IBookService bookService = new BookServiceImpl();
@@ -34,29 +35,103 @@ public class BookController extends HttpServlet {
 			getBookUpdate(req, resp);
 		} else if (url.contains("adminDeleteBook")) {
 			delete(req, resp);
+		} else if (url.contains("/adminReader")) {
+			ListReader(req, resp);
+		} else if (url.contains("adminInsertReader")) {
+			insertReader(req, resp);
+		} else if (url.contains("/adminStaff")) {
+			ListStaff(req, resp);
 		}
 
 	}
 
-	private void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String bookID = req.getParameter("bookID");
-		bookService.delete(bookID);
-		ListBook(req, resp);
-	}
+	private void ListStaff(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.setAttribute("MaDG", "101");
+		req.setAttribute("HoTen", "Nguyen Van A");
+		req.setAttribute("NgaySinh", "05/03/2003");
+		req.setAttribute("CCCD", "1234567");
+		req.setAttribute("DiaChi", "HCM");
+		req.setAttribute("SoDT", "0904257931");
+		req.setAttribute("Email", "nva11@gmail.com");
+		req.setAttribute("Password", "abc123");
+		req.setAttribute("GioiTinh", "Nam");
 
-	private void getBookUpdate(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-		String bookID = req.getParameter("bookID");
-		BookModel book = bookService.findOne(bookID);
-		req.setAttribute("book", book);
-		RequestDispatcher rd = req.getRequestDispatcher("/views/admin/updateBook.jsp");
+		RequestDispatcher rd = req.getRequestDispatcher("/views/admin/staff.jsp");
 		rd.forward(req, resp);
 
 	}
 
+	private void insertReader(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		RequestDispatcher rd = req.getRequestDispatcher("/views/admin/insertReader.jsp");
+		rd.forward(req, resp);
+	}
+
+	private void ListReader(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.setAttribute("MaDG", "101");
+		req.setAttribute("HoTen", "Nguyen Van A");
+		req.setAttribute("NgaySinh", "05/03/2003");
+		req.setAttribute("CCCD", "1234567");
+		req.setAttribute("DiaChi", "HCM");
+		req.setAttribute("SoDT", "0904257931");
+		req.setAttribute("Email", "nva11@gmail.com");
+		req.setAttribute("Password", "abc123");
+		req.setAttribute("GioiTinh", "Nam");
+
+		RequestDispatcher rd = req.getRequestDispatcher("/views/admin/reader.jsp");
+		rd.forward(req, resp);
+
+	}
+
+	private void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		/*
+		 * String bookID = req.getParameter("bookID"); bookService.delete(bookID);
+		 */
+		ListBook(req, resp);
+	}
+
+	private void getBookUpdate(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+//		String bookID = req.getParameter("bookID");
+//		BookModel book = bookService.findOne(bookID);
+//		req.setAttribute("book", book);
+//		RequestDispatcher rd = req.getRequestDispatcher("/views/admin/updateBook.jsp");
+//		rd.forward(req, resp);
+		BookModel book = new BookModel();
+		book.setIsbn13("1");
+		book.setIsbn10("2");
+		book.setTitle("Muôn Kiếp Nhân Sinh");
+		book.setCategories("Tâm Linh");
+		book.setNum_pages(10);
+		book.setDescription("Gieo nhân nào gặp quả đấy");
+		book.setRatings_count(10);
+		book.setAverage_rating(5);
+		book.setAuthors("Nguyên Phong");
+		book.setThumbnail("https://fahashavn");
+		req.setAttribute("book", book);
+		RequestDispatcher rd = req.getRequestDispatcher("/views/admin/updateBook.jsp");
+		rd.forward(req, resp);
+	}
+
 	private void ListBook(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		List<BookModel> listBook = bookService.findAll();
-		req.setAttribute("books", listBook);
-		
+//		List<BookModel> listBook = bookService.findAll();
+//		req.setAttribute("books", listBook);
+//		
+//		req.getRequestDispatcher("/views/admin/books.jsp").forward(req, resp);
+
+		List<BookModel> books = new ArrayList<BookModel>();
+		BookModel book = new BookModel();
+		book.setIsbn13("1");
+		book.setIsbn10("2");
+		book.setTitle("Muôn Kiếp Nhân Sinh");
+		book.setCategories("Tâm Linh");
+		book.setNum_pages(10);
+		book.setDescription("Gieo nhân nào gặp quả đấy");
+		book.setRatings_count(10);
+		book.setAverage_rating(5);
+		book.setAuthors("Nguyên Phong");
+		book.setThumbnail("https://fahashavn");
+
+		books.add(book);
+		req.setAttribute("books", books);
 		req.getRequestDispatcher("/views/admin/books.jsp").forward(req, resp);
 
 	}
@@ -75,39 +150,34 @@ public class BookController extends HttpServlet {
 			postinsert(req, resp);
 		} else if (url.contains("adminUpdateBook")) {
 			updateBook(req, resp);
+		} else if (url.contains("adminInsertReader")) {
+			ListReader(req, resp);
 		}
 	}
 
 	private void updateBook(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		try {
-			String isbn13 = req.getParameter("isbn13");
-			String isbn10 = req.getParameter("isbn10");
-			String title = req.getParameter("title");
-			String authors = req.getParameter("authors");
-			String categories = req.getParameter("categories");
-			String thumbnail = req.getParameter("thumbnail");
-			String description = req.getParameter("description");
-			int published_year = Integer.parseInt(req.getParameter("published_year"));
-			float average_rating = Float.parseFloat(req.getParameter("average_rating"));
-			int num_pages = Integer.parseInt(req.getParameter("num_pages"));
-			int ratings_count = Integer.parseInt(req.getParameter("ratings_count"));
-
-			BookModel book = new BookModel();
-			book.setIsbn13(isbn13);
-			book.setIsbn10(isbn10);
-			book.setTitle(title);
-			book.setAuthors(authors);
-			book.setDescription(description);
-			book.setCategories(categories);
-			book.setThumbnail(thumbnail);
-			book.setPublished_year(published_year);
-			book.setAverage_rating(average_rating);
-			book.setNum_pages(num_pages);
-			book.setRatings_count(ratings_count);
-			bookService.update(book);
-		} catch (Exception ex) {
-
-		}
+		/*
+		 * try { String isbn13 = req.getParameter("isbn13"); String isbn10 =
+		 * req.getParameter("isbn10"); String title = req.getParameter("title"); String
+		 * authors = req.getParameter("authors"); String categories =
+		 * req.getParameter("categories"); String thumbnail =
+		 * req.getParameter("thumbnail"); String description =
+		 * req.getParameter("description"); int published_year =
+		 * Integer.parseInt(req.getParameter("published_year")); float average_rating =
+		 * Float.parseFloat(req.getParameter("average_rating")); int num_pages =
+		 * Integer.parseInt(req.getParameter("num_pages")); int ratings_count =
+		 * Integer.parseInt(req.getParameter("ratings_count"));
+		 * 
+		 * BookModel book = new BookModel(); book.setIsbn13(isbn13);
+		 * book.setIsbn10(isbn10); book.setTitle(title); book.setAuthors(authors);
+		 * book.setDescription(description); book.setCategories(categories);
+		 * book.setThumbnail(thumbnail); book.setPublished_year(published_year);
+		 * book.setAverage_rating(average_rating); book.setNum_pages(num_pages);
+		 * book.setRatings_count(ratings_count); bookService.update(book); } catch
+		 * (Exception ex) {
+		 * 
+		 * }
+		 */
 		ListBook(req, resp);
 
 	}

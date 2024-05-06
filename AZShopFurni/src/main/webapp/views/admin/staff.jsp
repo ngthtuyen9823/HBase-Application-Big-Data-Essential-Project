@@ -15,10 +15,10 @@
 		<div class="container">
 			<div class="card mb-4">
 				<div class="card-body">
-					<a href="<c:url value='/adminInsertBook'/>"
+					<a href="<c:url value='/adminInsertReader'/>"
 						style="margin-right: 50px;">
 						<button type="button" class="btn btn-dark">
-							<i class="ace-icon fa fa-pencil"></i> Thêm sách
+							<i class="ace-icon fa fa-pencil"></i> Thêm thủ thư
 						</button>
 					</a>
 				</div>
@@ -26,40 +26,37 @@
 
 			<div class="card mb-4">
 				<div class="card-header">
-					<i class="fas fa-table me-1"></i> Bảng các đầu sách
+					<i class="fas fa-table me-1"></i> Bảng các thủ thư
 				</div>
 				<div class="card-body">
 					<table id="datatablesSimple">
 						<thead>
 							<tr>
-								<th>ISBN</th>
-								<th>Title</th>
-								<th>Authors</th>
-								<th>Categories</th>
-								<th>Thumbnail</th>
-								<th>Description</th>
-								<th>Publish Year</th>
-								<th>Average Rating</th>
-								<th>Numbers</th>
-								<th>Rating count</th>
+								<th>MaDG</th>
+								<th>Ho Ten</th>
+								<th>Ngay Sinh</th>
+								<th>Gioi Tinh</th>
+								<th>CCCD</th>
+								<th>Dia Chi</th>
+								<th>SoDT</th>
+								<th>Email</th>
+								<th>Password</th>
 								<th>Edit</th>
 
 							</tr>
 						</thead>
 						<tfoot>
 						<tbody>
-							<c:forEach var="i" items="${books}">
 								<tr>
-									<td>${i.isbn10}</td>
-									<td>${i.title}</td>
-									<td>${i.authors}</td>
-									<td>${i.categories}</td>
-									<td>${i.thumbnail}</td>
-									<td>${i.description}</td>
-									<td>${i.published_year}</td>
-									<td>${i.average_rating}</td>
- 									<td>${i.num_pages}</td>
-									<td>${i.ratings_count}</td>									
+									<td>${MaDG}</td>
+									<td>${HoTen}</td>
+									<td>${NgaySinh}</td>
+									<td>${GioiTinh}</td>
+									<td>${CCCD}</td>
+									<td>${DiaChi}</td>
+									<td>${SoDT}</td>
+									<td>${Email}</td>
+ 									<td>${Password}</td>								
 									<td><div class="hidden-sm hidden-xs btn-group">
 <%-- 											<a
 												href='<c:url value = '/adminviewItem?ProductID=${i.productID}'></c:url>'>
@@ -84,7 +81,6 @@
 										</div>
 									</td>
 								</tr>
-							</c:forEach>
 						</tbody>
 						</tfoot>
 					</table>
