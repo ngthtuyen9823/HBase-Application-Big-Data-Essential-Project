@@ -16,7 +16,7 @@ import com.azshop.service.IBookService;
 import com.azshop.service.impl.BookServiceImpl;
 
 @WebServlet(urlPatterns = { "/adminBook", "/adminInsertBook", "/adminUpdateBook", "/adminDeleteBook", "/adminReader",
-		"/adminInsertReader", "/adminStaff" })
+		"/adminInsertReader", "/adminStaff" ,"/adminBorrow"})
 public class BookController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	IBookService bookService = new BookServiceImpl();
@@ -41,8 +41,23 @@ public class BookController extends HttpServlet {
 			insertReader(req, resp);
 		} else if (url.contains("/adminStaff")) {
 			ListStaff(req, resp);
+		} else if (url.contains("/adminBorrow")) {
+			ListBorrow(req, resp);
 		}
 
+	}
+
+	private void ListBorrow(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.setAttribute("MaDG", "101");
+		req.setAttribute("MaTT", "1");
+		req.setAttribute("MaSach", "11");
+		req.setAttribute("NgayMuon", "12/02/2024");
+		req.setAttribute("HanMuon", "7");
+		req.setAttribute("NgayTra", "15/02/2024");
+		req.setAttribute("TinhTrang", "Không");
+		RequestDispatcher rd = req.getRequestDispatcher("/views/admin/borrow.jsp");
+		rd.forward(req, resp);
+		
 	}
 
 	private void ListStaff(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
