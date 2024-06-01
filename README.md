@@ -41,5 +41,3 @@ Cho thấy đã import và convert data thành công.
 
 1. Nhấn chuột phải vào Project.
 2. Chọn **Run on Server** để mở ứng dụng web.
-
-### Màn hình hiện kết quả:
