@@ -1,8 +1,8 @@
-## 4.1. Mô tả bài toán
+## 1. Mô tả bài toán
 
 Xây dựng website quản lý thông tin sách của thư viện và website hiển thị thông tin sách cho người dùng, cho phép xem và tìm hiểu các sách hiện có trong thư viện bằng việc tìm kiếm và lọc theo các yêu cầu khác nhau. Ngoài ra, có thể tạo thống kê từ cơ sở dữ liệu và hiển thị bằng biểu đồ.
 
-## 4.2. Mô tả tập dữ liệu
+## 2. Mô tả tập dữ liệu
 
 Dữ liệu được lấy từ [đây](https://www.kaggle.com/datasets/dylanjcastillo/7k-books-with-metadata/data). Tập dữ liệu gồm 7000 dòng với các cột được mô tả như sau:
 
@@ -17,7 +17,7 @@ Dữ liệu được lấy từ [đây](https://www.kaggle.com/datasets/dylanjca
 - `average_rating` (Average rating in Goodreads): Điểm đánh giá trung bình của sách trên Goodreads.
 - `num_page`: Số trang sách.
 
-## 4.3. Hướng dẫn cài đặt project
+## 3. Hướng dẫn cài đặt project
 
 ### Clone project từ GitHub
 
